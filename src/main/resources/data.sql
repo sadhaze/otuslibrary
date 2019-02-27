@@ -1,0 +1,1 @@
+insert into persons (id, `fname`, `lname`) values (1, 'Ant', 'Lit');
