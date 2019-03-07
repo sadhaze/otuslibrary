@@ -30,7 +30,7 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     public void insert(Genre genre){
-        jdbc.update("insert into genre (id, `genre`) values (?, ?)", genre.getId(), genre.getName());
+        jdbc.update("insert into genre (id, `name`) values (?, ?)", genre.getId(), genre.getName());
     }
 
     public Genre getById(Integer id){
