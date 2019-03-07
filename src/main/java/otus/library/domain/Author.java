@@ -1,8 +1,6 @@
 package otus.library.domain;
 
 public class Author {
-    //CREATE TABLE AUTHOR(ID INT PRIMARY KEY, FNAME VARCHAR(255), LNAME VARCHAR(255));
-
     private final Integer id;
     private final String fname;
     private final String lname;

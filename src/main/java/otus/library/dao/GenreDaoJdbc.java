@@ -21,11 +21,8 @@ public class GenreDaoJdbc implements GenreDao {
         }
     }
 
-    //CREATE TABLE GENRE(ID INT PRIMARY KEY, NAME VARCHAR(255));
-
     public GenreDaoJdbc(JdbcOperations jdbc){
         this.jdbc = jdbc;
-        System.out.println(getById(1).getName());
     }
 
     public Integer count(){

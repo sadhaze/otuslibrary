@@ -1,7 +1,6 @@
 package otus.library.dao;
 
 import otus.library.domain.Author;
-
 import java.util.List;
 
 public interface AuthorDao {

@@ -1,7 +1,6 @@
 package otus.library.dao;
 
 import otus.library.domain.Book;
-
 import java.util.List;
 
 public interface BookDao {
