@@ -15,7 +15,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     private static class AuthorMapper implements RowMapper<Author>{
         public Author mapRow(ResultSet resultSet, int i) throws SQLException{
-            int id = resultSet.getInt("id");
+            Integer id = resultSet.getInt("id");
             String fname = resultSet.getString("fname");
             String lname = resultSet.getString("lname");
             return new Author(id, fname, lname);
@@ -26,7 +26,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         this.jdbc = jdbc;
     }
 
-    public int count(){
+    public Integer count(){
         return jdbc.queryForObject("select count(*) from author", Integer.class);
     }
 
@@ -34,7 +34,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         jdbc.update("insert into author (id, `fname`, `lname`) values (?, ?, ?)", author.getId(), author.getFname(), author.getLname());
     }
 
-    public Author getById(int id){
+    public Author getById(Integer id){
         return jdbc.queryForObject("select * from author where id = ?", new Object[] {id}, new AuthorMapper());
     }
 
