@@ -38,6 +38,6 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     public List<Genre> getAll(){
-        return jdbc.queryForList("select * from genre", Genre.class, new GenreDaoJdbc.GenreMapper());
+        return jdbc.query("select * from genre", new GenreDaoJdbc.GenreMapper());
     }
 }

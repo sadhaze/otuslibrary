@@ -40,6 +40,6 @@ public class BookDaoJdbc implements BookDao {
     }
 
     public List<Book> getAll(){
-        return jdbc.queryForList("select * from book", Book.class, new BookDaoJdbc.BookMapper());
+        return jdbc.query("select * from book", new BookDaoJdbc.BookMapper());
     }
 }
