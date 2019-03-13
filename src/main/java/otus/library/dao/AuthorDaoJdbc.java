@@ -39,6 +39,6 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     public List<Author> getAll(){
-        return jdbc.queryForList("select * from author", Author.class, new AuthorMapper());
+        return jdbc.query("select * from author", new AuthorMapper());
     }
 }

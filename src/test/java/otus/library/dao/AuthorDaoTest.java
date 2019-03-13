@@ -5,9 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import otus.library.domain.Author;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 @DisplayName("Тест DAO авторов")
 public class AuthorDaoTest {
     @Autowired
@@ -22,7 +27,7 @@ public class AuthorDaoTest {
     @Test
     @DisplayName("Получение списка авторов")
     void AuthorDaoGetAllTest(){
-        Assertions.assertEquals("Poem", authorDao.getAll());
+        Assertions.assertEquals("Alex", authorDao.getAll().get(1).getFname());
     }
 
     @Test

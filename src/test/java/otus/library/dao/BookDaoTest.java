@@ -5,9 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import otus.library.domain.Book;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 @DisplayName("Тест DAO книг")
 public class BookDaoTest {
     @Autowired
@@ -22,15 +27,17 @@ public class BookDaoTest {
     @Test
     @DisplayName("Получение списка книг")
     void BookDaoGetAllTest(){
-        Assertions.assertEquals("Poem", bookDao.getAll());
+        Assertions.assertEquals("Ruslan i Lyudmila", bookDao.getAll().get(1).getName());
     }
 
     @Test
     @DisplayName("Вставка и получение книги")
     void BookDaoInsertAndGetByIdTest(){
         bookDao.insert(new Book(10, "booktest", 1, 1));
-        Assertions.assertEquals("booktest", bookDao.getById(10).getName());
-        Assertions.assertEquals("1", bookDao.getById(10).getAuthor().toString());
-        Assertions.assertEquals("1", bookDao.getById(10).getGenre().toString());
+        Book book = bookDao.getById(10);
+        Assertions.assertEquals("booktest", book.getName());
+        Assertions.assertEquals("Bayan", book.getAuthorFname());
+        Assertions.assertEquals("Shiryanov", book.getAuthorLname());
+        Assertions.assertEquals("Poem", book.getGenreName());
     }
 }

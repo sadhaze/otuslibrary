@@ -16,10 +16,11 @@ public class BookDaoJdbc implements BookDao {
     private static class BookMapper implements RowMapper<Book> {
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             Integer id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            Integer author = resultSet.getInt("author");
-            Integer genre = resultSet.getInt("genre");
-            return new Book(id, name, author, genre);
+            String name = resultSet.getString("book.name");
+            String authorFname = resultSet.getString("fname");
+            String authorLname = resultSet.getString("lname");
+            String genreName = resultSet.getString("genrename");
+            return new Book(id, name, authorFname, authorLname, genreName);
         }
     }
 
@@ -36,10 +37,31 @@ public class BookDaoJdbc implements BookDao {
     }
 
     public Book getById(Integer id){
-        return jdbc.queryForObject("select * from book where id = ?", new Object[] {id}, new BookDaoJdbc.BookMapper());
+        return jdbc.queryForObject(
+                "select " +
+                        "b.id, " +
+                        "b.name, " +
+                        "a.fname, " +
+                        "a.lname, " +
+                        "g.name as genrename " +
+                        "from book b " +
+                        "join author a on b.author = a.id " +
+                        "join genre g on b.genre = g.id " +
+                        "where b.id = ?",
+                new Object[] {id}, new BookDaoJdbc.BookMapper());
     }
 
     public List<Book> getAll(){
-        return jdbc.queryForList("select * from book", Book.class, new BookDaoJdbc.BookMapper());
+        return jdbc.query(
+                "select " +
+                        "b.id, " +
+                        "b.name, " +
+                        "a.fname, " +
+                        "a.lname, " +
+                        "g.name as genrename " +
+                        "from book b " +
+                        "join author a on b.author = a.id " +
+                        "join genre g on b.genre = g.id ",
+                new BookDaoJdbc.BookMapper());
     }
 }
