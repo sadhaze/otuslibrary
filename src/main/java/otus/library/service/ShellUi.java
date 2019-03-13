@@ -25,7 +25,8 @@ public class ShellUi {
 
     @ShellMethod(value = "Show author by ID")
     public String getAuthor(Integer id){
-        return "Author by number " + authorDao.getById(id).getId() + " is " + authorDao.getById(id).getFname() + " " + authorDao.getById(id).getLname();
+        Author author = authorDao.getById(id);
+        return "Author by number " + author.getId() + " is " + author.getFname() + " " + author.getLname();
     }
 
     @ShellMethod(value = "Show all author")
@@ -46,19 +47,20 @@ public class ShellUi {
 
     @ShellMethod(value = "Show book by ID")
     public String getBook(Integer id){
-        return "Book by number " + bookDao.getById(id).getId() + " is " + bookDao.getById(id).getName()
-                + ". Genre: " + genreDao.getById(bookDao.getById(id).getGenre()).getName()
-                + ". Author: " + authorDao.getById(bookDao.getById(id).getAuthor()).getFname() + " "
-                + authorDao.getById(bookDao.getById(id).getAuthor()).getLname();
+        Book book = bookDao.getById(id);
+        return "Book by number " + book.getId() + " is " + book.getName()
+                + ". Genre: " + book.getGenreName()
+                + ". Author: " + book.getAuthorFname() + " "
+                + book.getAuthorLname();
     }
 
     @ShellMethod(value = "Show all book")
     public void getBookAll(){
         List<Book> book = bookDao.getAll();
         book.forEach(item->System.out.println(item.getId() + ": " + item.getName()
-                + ". Genre: " + genreDao.getById(bookDao.getById(item.getGenre()).getGenre()).getName()
-                + ". Author: " + authorDao.getById(bookDao.getById(item.getAuthor()).getAuthor()).getFname() + " "
-                + authorDao.getById(bookDao.getById(item.getAuthor()).getAuthor()).getLname()
+                + ". Genre: " + item.getGenreName()
+                + ". Author: " + item.getAuthorFname() + " "
+                + item.getAuthorLname()
                 + "\n"));
     }
 
@@ -74,7 +76,8 @@ public class ShellUi {
 
     @ShellMethod(value = "Show genre by ID")
     public String getGenre(Integer id){
-        return "Genre by number " + genreDao.getById(id).getId() + " is " + genreDao.getById(id).getName();
+        Genre genre = genreDao.getById(id);
+        return "Genre by number " + genre.getId() + " is " + genre.getName();
     }
 
     @ShellMethod(value = "Show all genre")

@@ -34,8 +34,10 @@ public class BookDaoTest {
     @DisplayName("Вставка и получение книги")
     void BookDaoInsertAndGetByIdTest(){
         bookDao.insert(new Book(10, "booktest", 1, 1));
-        Assertions.assertEquals("booktest", bookDao.getById(10).getName());
-        Assertions.assertEquals("1", bookDao.getById(10).getAuthor().toString());
-        Assertions.assertEquals("1", bookDao.getById(10).getGenre().toString());
+        Book book = bookDao.getById(10);
+        Assertions.assertEquals("booktest", book.getName());
+        Assertions.assertEquals("Bayan", book.getAuthorFname());
+        Assertions.assertEquals("Shiryanov", book.getAuthorLname());
+        Assertions.assertEquals("Poem", book.getGenreName());
     }
 }
