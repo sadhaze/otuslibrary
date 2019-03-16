@@ -13,7 +13,8 @@ import org.springframework.shell.jline.ScriptShellApplicationRunner;
 })
 @DisplayName("Тест жанров")
 class GenreTest {
-    Genre genre = new Genre(1, "NameTest");
+    Long id = new Long(1);
+    Genre genre = new Genre(id, "NameTest");
 
     @Test
     @DisplayName("Получение идентификатора")

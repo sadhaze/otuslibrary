@@ -1,35 +1,19 @@
 package otus.library.domain;
 
 public class Book {
-    private final Integer id;
+    private final Long id;
     private final String name;
-    private final Integer author;
-    private final Integer genre;
-    private final String authorFname;
-    private final String authorLname;
-    private final String genreName;
+    private final Author author;
+    private final Genre genre;
 
-    public Book(Integer id, String name, Integer author, Integer genre){
+    public Book(Long id, String name, Author author, Genre genre){
         this.id = id;
         this.name = name;
         this.author = author;
         this.genre = genre;
-        this.authorFname = null;
-        this.authorLname = null;
-        this.genreName = null;
     }
 
-    public Book(Integer id, String name, String authorFname, String authorLname, String genreName){
-        this.id = id;
-        this.name = name;
-        this.author = null;
-        this.genre = null;
-        this.authorFname = authorFname;
-        this.authorLname = authorLname;
-        this.genreName = genreName;
-    }
-
-    public Integer getId(){
+    public Long getId(){
         return this.id;
     }
 
@@ -37,23 +21,11 @@ public class Book {
         return this.name;
     }
 
-    public Integer getAuthor(){
+    public Author getAuthor(){
         return this.author;
     }
 
-    public Integer getGenre(){
+    public Genre getGenre(){
         return this.genre;
-    }
-
-    public String getAuthorFname(){
-        return this.authorFname;
-    }
-
-    public String getAuthorLname(){
-        return this.authorLname;
-    }
-
-    public String getGenreName(){
-        return this.genreName;
     }
 }

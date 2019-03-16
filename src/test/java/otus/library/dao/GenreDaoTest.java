@@ -4,15 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import otus.library.domain.Genre;
 
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+
+@JdbcTest
+@Import(GenreDaoJdbc.class)
 @DisplayName("Тест DAO жанров")
 public class GenreDaoTest {
     @Autowired
@@ -20,7 +18,7 @@ public class GenreDaoTest {
 
     @Test
     @DisplayName("Получение количества жанров")
-    void GanreDaoCountTesе(){
+    void GanreDaoCountTest(){
         Assertions.assertEquals("3", genreDao.count().toString());
     }
 
@@ -33,7 +31,8 @@ public class GenreDaoTest {
     @Test
     @DisplayName("Вставка и получение жанра")
     void GanreDaoInsertAndGetByIdTest(){
-        genreDao.insert(new Genre(10, "genretest"));
-        Assertions.assertEquals("genretest", genreDao.getById(10).getName());
+        Long id = new Long(10);
+        genreDao.insert(new Genre(id, "genretest"));
+        Assertions.assertEquals("genretest", genreDao.getById(id).getName());
     }
 }

@@ -13,7 +13,8 @@ import org.springframework.shell.jline.ScriptShellApplicationRunner;
 })
 @DisplayName("Тест автора")
 class AuthorTest {
-    Author author = new Author(1, "fnametest", "lnametest");
+    Long id = new Long(1);
+    Author author = new Author(id, "fnametest", "lnametest");
 
     @Test
     @DisplayName("Получение идентификатора")

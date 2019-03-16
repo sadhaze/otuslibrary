@@ -4,8 +4,8 @@ import otus.library.domain.Author;
 import java.util.List;
 
 public interface AuthorDao {
-    Integer count();
+    Long count();
     void insert(Author author);
-    Author getById(Integer id);
+    Author getById(Long id);
     List<Author> getAll();
 }

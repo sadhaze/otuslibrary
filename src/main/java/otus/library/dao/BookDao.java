@@ -4,8 +4,8 @@ import otus.library.domain.Book;
 import java.util.List;
 
 public interface BookDao {
-    Integer count();
+    Long count();
     void insert(Book book);
-    Book getById(Integer id);
+    Book getById(Long id);
     List<Book> getAll();
 }

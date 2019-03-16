@@ -13,7 +13,15 @@ import org.springframework.shell.jline.ScriptShellApplicationRunner;
 })
 @DisplayName("Тест книг")
 public class BookTest {
-    Book book = new Book(1, "booktest", 1, 1);
+    Long id = new Long(1);
+    Book book = new Book(
+            id,
+            "booktest",
+            new Author(new Long(11),
+                    "testauthorfname",
+                    "testauthorlname"),
+            new Genre(new Long(12),
+                    "testgenre"));
 
     @Test
     @DisplayName("Получение идентификатора")
@@ -30,12 +38,12 @@ public class BookTest {
     @Test
     @DisplayName("Получение иидентификатора автора")
     void BookAutorIdTest(){
-        Assertions.assertEquals("1", book.getAuthor().toString());
+        Assertions.assertEquals("11", book.getAuthor().getId().toString());
     }
 
     @Test
     @DisplayName("Получение идентификатора жанра")
     void AuthorLNameTest(){
-        Assertions.assertEquals("1", book.getGenre().toString());
+        Assertions.assertEquals("12", book.getGenre().getId().toString());
     }
 }

@@ -4,15 +4,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import otus.library.domain.Author;
 
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+@JdbcTest
+@Import(AuthorDaoJdbc.class)
 @DisplayName("Тест DAO авторов")
 public class AuthorDaoTest {
     @Autowired
@@ -20,8 +17,8 @@ public class AuthorDaoTest {
 
     @Test
     @DisplayName("Получение количества авторов")
-    void AuthorDaoCountTesе(){
-        Assertions.assertEquals("4", authorDao.count().toString());
+    void AuthorDaoCountTest(){
+        Assertions.assertEquals("3", authorDao.count().toString());
     }
 
     @Test
@@ -33,8 +30,9 @@ public class AuthorDaoTest {
     @Test
     @DisplayName("Вставка и получение автора")
     void AuthorDaoInsertAndGetByIdTest(){
-        authorDao.insert(new Author(10, "authorFNameTest", "authorLNameTest"));
-        Assertions.assertEquals("authorFNameTest", authorDao.getById(10).getFname());
-        Assertions.assertEquals("authorLNameTest", authorDao.getById(10).getLname());
+        Long id = new Long(10);
+        authorDao.insert(new Author(id, "authorFNameTest", "authorLNameTest"));
+        Assertions.assertEquals("authorFNameTest", authorDao.getById(id).getFname());
+        Assertions.assertEquals("authorLNameTest", authorDao.getById(id).getLname());
     }
 }

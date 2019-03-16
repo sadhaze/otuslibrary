@@ -4,15 +4,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
+import otus.library.domain.Author;
 import otus.library.domain.Book;
+import otus.library.domain.Genre;
 
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+@JdbcTest
+@Import(BookDaoJdbc.class)
 @DisplayName("Тест DAO книг")
 public class BookDaoTest {
     @Autowired
@@ -20,7 +19,7 @@ public class BookDaoTest {
 
     @Test
     @DisplayName("Получение количества книг")
-    void BookDaoCountTesе(){
+    void BookDaoCountTest(){
         Assertions.assertEquals("4", bookDao.count().toString());
     }
 
@@ -33,11 +32,19 @@ public class BookDaoTest {
     @Test
     @DisplayName("Вставка и получение книги")
     void BookDaoInsertAndGetByIdTest(){
-        bookDao.insert(new Book(10, "booktest", 1, 1));
-        Book book = bookDao.getById(10);
+        Long bookId = new Long(10);
+        Long authorId = new Long(1);
+        Long genreId = new Long(1);
+        bookDao.insert(
+                new Book(bookId, "booktest",
+                        new Author(authorId, "", ""),
+                        new Genre(genreId, "")
+                )
+        );
+        Book book = bookDao.getById(bookId);
         Assertions.assertEquals("booktest", book.getName());
-        Assertions.assertEquals("Bayan", book.getAuthorFname());
-        Assertions.assertEquals("Shiryanov", book.getAuthorLname());
-        Assertions.assertEquals("Poem", book.getGenreName());
+        Assertions.assertEquals("Bayan", book.getAuthor().getFname());
+        Assertions.assertEquals("Shiryanov", book.getAuthor().getLname());
+        Assertions.assertEquals("Poem", book.getGenre().getName());
     }
 }
