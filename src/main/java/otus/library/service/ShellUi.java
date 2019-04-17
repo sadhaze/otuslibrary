@@ -2,12 +2,8 @@ package otus.library.service;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import otus.library.repository.AuthorRepository;
-import otus.library.repository.BookRepository;
-import otus.library.repository.GenreRepository;
-import otus.library.domain.Author;
-import otus.library.domain.Book;
-import otus.library.domain.Genre;
+import otus.library.domain.*;
+import otus.library.repository.*;
 
 import java.util.List;
 
@@ -15,12 +11,21 @@ import java.util.List;
 public class ShellUi {
     AuthorRepository authorRepository;
     BookRepository bookRepository;
+    CommentRepository commentRepository;
     GenreRepository genreRepository;
+    UserRepository userRepository;
 
-    private ShellUi(AuthorRepository authorRepository, BookRepository bookRepository, GenreRepository genreRepository){
+    private ShellUi(
+            AuthorRepository authorRepository,
+            BookRepository bookRepository,
+            CommentRepository commentRepository,
+            GenreRepository genreRepository,
+            UserRepository userRepository){
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.commentRepository = commentRepository;
         this.genreRepository = genreRepository;
+        this.userRepository = userRepository;
     }
 
     @ShellMethod(value = "Show author by ID")
@@ -74,6 +79,28 @@ public class ShellUi {
         bookRepository.insert(new Book(id, name, authorRepository.getById(author), genreRepository.getById(genre)));
     }
 
+    @ShellMethod(value = "Show comment by ID")
+    public String getComment(Long id){
+        Comment comment = commentRepository.getById(id);
+        return "Comment by number " + comment.getId() + " is " + comment.getComment();
+    }
+
+    @ShellMethod(value = "Show all comments")
+    public void getCommentAll(){
+        List<Comment> comment = commentRepository.getAll();
+        comment.forEach(item->System.out.println(item.getId() + ": " + item.getComment() + "\n"));
+    }
+
+    @ShellMethod(value = "Show comment count")
+    public String getCommentCount(){
+        return "Comment count is " + commentRepository.count();
+    }
+
+    @ShellMethod(value = "Insert new comment")
+    public void insertComment(Long id, Long book, String user, String comment){
+        commentRepository.insert(new Comment(id, bookRepository.getById(book), userRepository.getById(user), comment));
+    }
+
     @ShellMethod(value = "Show genre by ID")
     public String getGenre(Long id){
         Genre genre = genreRepository.getById(id);
@@ -94,5 +121,27 @@ public class ShellUi {
     @ShellMethod(value = "Insert new genre")
     public void insertGenre(Long id, String name){
         genreRepository.insert(new Genre(id, name));
+    }
+
+    @ShellMethod(value = "Show user by ID")
+    public String getUser(String id){
+        User user = userRepository.getById(id);
+        return user != null ? "User by number " + user.getId() + " is exist" : "User by number " + id + " dos't exist";
+    }
+
+    @ShellMethod(value = "Show all users")
+    public void getUserAll(){
+        List<User> user = userRepository.getAll();
+        user.forEach(item->System.out.println(item.getId() + "\n"));
+    }
+
+    @ShellMethod(value = "Show users count")
+    public String getUserCount(){
+        return "Users count is " + userRepository.count();
+    }
+
+    @ShellMethod(value = "Insert new user")
+    public void insertUser(String id){
+        userRepository.insert(new User(id));
     }
 }
