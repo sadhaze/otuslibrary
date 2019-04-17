@@ -17,7 +17,7 @@ public class CommentRepositoryJpa implements CommentRepository {
     public CommentRepositoryJpa(){}
 
     public Long count(){
-        return new Long(em.createQuery("select c from Comment c", Comment.class).getResultList().size());
+        return em.createQuery("select count(c) from Comment c", Long.class).getSingleResult();
     }
 
     public void insert(Comment comment){

@@ -32,16 +32,14 @@ public class BookRepositoryTest {
     @Test
     @DisplayName("Вставка и получение книги")
     void bookDaoInsertAndGetByIdTest(){
-        Long bookId = new Long(10);
-        Long authorId = new Long(10);
-        Long genreId = new Long(10);
+        Long id = new Long(10);
         bookRepository.insert(
-                new Book(bookId, "booktest",
-                        new Author(authorId, "TestFName", "TestLName"),
-                        new Genre(genreId, "TestGenre")
+                new Book(id, "booktest",
+                        new Author(id, "TestFName", "TestLName"),
+                        new Genre(id, "TestGenre")
                 )
         );
-        Book book = bookRepository.getById(bookId);
+        Book book = bookRepository.getById(id);
         Assertions.assertEquals("booktest", book.getName());
         Assertions.assertEquals("TestFName", book.getAuthor().getFname());
         Assertions.assertEquals("TestLName", book.getAuthor().getLname());

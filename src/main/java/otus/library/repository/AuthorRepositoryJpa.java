@@ -17,7 +17,7 @@ public class AuthorRepositoryJpa implements AuthorRepository {
     public AuthorRepositoryJpa(){}
 
     public Long count(){
-        return new Long(em.createQuery("select a from Author a", Author.class).getResultList().size());
+        return em.createQuery("select count(a) from Author a", Long.class).getSingleResult();
     }
 
     public void insert(Author author){

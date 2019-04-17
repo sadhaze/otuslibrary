@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import otus.library.domain.Book;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -17,7 +18,7 @@ public class BookRepositoryJpa implements BookRepository {
     public BookRepositoryJpa(){}
 
     public Long count(){
-        return new Long(em.createQuery("select b from Book b", Book.class).getResultList().size());
+        return em.createQuery("select count(b) from Book b", Long.class).getSingleResult();
     }
 
     public void insert(Book book){
@@ -29,6 +30,7 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     public List<Book> getAll(){
+        EntityGraph<Book> book = em.createEntityGraph(Book.class);
         return em.createQuery("select b from Book b", Book.class).getResultList();
     }
 }

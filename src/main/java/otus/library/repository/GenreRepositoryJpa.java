@@ -17,7 +17,7 @@ public class GenreRepositoryJpa implements GenreRepository {
     public GenreRepositoryJpa(){}
 
     public Long count(){
-        return new Long(em.createQuery("select g from Genre g", Genre.class).getResultList().size());
+        return em.createQuery("select count(g) from Genre g", Long.class).getSingleResult();
     }
 
     public void insert(Genre genre){

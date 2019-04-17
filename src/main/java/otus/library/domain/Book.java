@@ -2,7 +2,7 @@ package otus.library.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Book {
@@ -11,10 +11,10 @@ public class Book {
 
     private String name;
 
-    @OneToOne
+    @ManyToOne
     private Author author;
 
-    @OneToOne
+    @ManyToOne
     private Genre genre;
 
     public Book(){}

@@ -2,17 +2,17 @@ package otus.library.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Comment {
     @Id
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Book book;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
     private String comment;

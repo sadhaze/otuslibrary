@@ -17,7 +17,7 @@ public class UserRepositoryJpa implements UserRepository {
     public UserRepositoryJpa(){}
 
     public Long count(){
-        return new Long(em.createQuery("select u from User u", User.class).getResultList().size());
+        return em.createQuery("select count(u) from User u", Long.class).getSingleResult();
     }
 
     public void insert(User user){
