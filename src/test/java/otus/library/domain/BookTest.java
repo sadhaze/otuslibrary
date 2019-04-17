@@ -25,25 +25,25 @@ public class BookTest {
 
     @Test
     @DisplayName("Получение идентификатора")
-    void BookIdTest(){
+    void bookIdTest(){
         Assertions.assertEquals("1", book.getId().toString());
     }
 
     @Test
     @DisplayName("Получение имени")
-    void BookNameTest(){
+    void bookNameTest(){
         Assertions.assertEquals("booktest", book.getName());
     }
 
     @Test
     @DisplayName("Получение иидентификатора автора")
-    void BookAutorIdTest(){
+    void bookAutorIdTest(){
         Assertions.assertEquals("11", book.getAuthor().getId().toString());
     }
 
     @Test
     @DisplayName("Получение идентификатора жанра")
-    void AuthorLNameTest(){
+    void authorLNameTest(){
         Assertions.assertEquals("12", book.getGenre().getId().toString());
     }
 }

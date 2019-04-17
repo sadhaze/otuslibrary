@@ -18,13 +18,13 @@ class GenreTest {
 
     @Test
     @DisplayName("Получение идентификатора")
-    void GanreIdTest(){
+    void genreIdTest(){
         Assertions.assertEquals("1", genre.getId().toString());
     }
 
     @Test
     @DisplayName("Получение имени")
-    void GanreNameTest(){
+    void genreNameTest(){
         Assertions.assertEquals("NameTest", genre.getName());
     }
 }

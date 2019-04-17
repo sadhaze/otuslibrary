@@ -1,9 +1,9 @@
-package otus.library.dao;
+package otus.library.repository;
 
 import otus.library.domain.Book;
 import java.util.List;
 
-public interface BookDao {
+public interface BookRepository {
     Long count();
     void insert(Book book);
     Book getById(Long id);

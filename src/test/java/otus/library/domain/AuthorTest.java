@@ -18,19 +18,19 @@ class AuthorTest {
 
     @Test
     @DisplayName("Получение идентификатора")
-    void AuthorIdTest(){
+    void authorIdTest(){
         Assertions.assertEquals("1", author.getId().toString());
     }
 
     @Test
     @DisplayName("Получение имени")
-    void AuthorFNameTest(){
+    void authorFNameTest(){
         Assertions.assertEquals("fnametest", author.getFname());
     }
 
     @Test
     @DisplayName("Получение фамилии")
-    void AuthorLNameTest(){
+    void authorLNameTest(){
         Assertions.assertEquals("lnametest", author.getLname());
     }
 }
