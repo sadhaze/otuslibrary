@@ -8,12 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import otus.library.domain.Genre;
 
-
 @DataJpaTest
 @Import(GenreRepositoryJpa.class)
 @DisplayName("Тест DAO жанров")
 public class GenreRepositoryTest {
-
     @Autowired
     GenreRepository genreRepository;
 
