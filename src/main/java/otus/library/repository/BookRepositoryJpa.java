@@ -30,7 +30,6 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     public List<Book> getAll(){
-        EntityGraph<Book> book = em.createEntityGraph(Book.class);
-        return em.createQuery("select b from Book b", Book.class).getResultList();
+        return em.createQuery("select b from Book b join fetch b.author join fetch b.genre", Book.class).getResultList();
     }
 }

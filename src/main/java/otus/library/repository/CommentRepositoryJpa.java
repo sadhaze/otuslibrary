@@ -29,6 +29,6 @@ public class CommentRepositoryJpa implements CommentRepository {
     }
 
     public List<Comment> getAll(){
-        return em.createQuery("select c from Comment c", Comment.class).getResultList();
+        return em.createQuery("select c from Comment c join fetch c.book join fetch c.user", Comment.class).getResultList();
     }
 }
