@@ -1,11 +1,11 @@
-package otus.library.dao;
+package otus.library.repository;
 
 import otus.library.domain.Genre;
 import java.util.List;
 
-public interface GenreDao {
-    Integer count();
+public interface GenreRepository {
+    Long count();
     void insert(Genre genre);
-    Genre getById(Integer id);
+    Genre getById(Long id);
     List<Genre> getAll();
 }

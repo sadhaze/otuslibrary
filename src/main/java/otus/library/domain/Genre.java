@@ -1,19 +1,35 @@
 package otus.library.domain;
 
-public class Genre {
-    private final Integer id;
-    private final String name;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-    public Genre(Integer id, String name){
-        this.id = id;
-        this.name = name;
+@Entity
+public class Genre {
+    @Id
+    private Long id;
+
+    private String name;
+
+    public Genre(){}
+
+    public Genre(Long id, String name){
+        this.setId(id);
+        this.setName(name);
     }
 
-    public Integer getId(){
+    public Long getId(){
         return this.id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
     }
 
     public String getName(){
         return this.name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 }

@@ -11,26 +11,14 @@ import org.springframework.shell.jline.ScriptShellApplicationRunner;
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
-@DisplayName("Тест автора")
-class AuthorTest {
-    Long id = new Long(1);
-    Author author = new Author(id, "fnametest", "lnametest");
+@DisplayName("Тест юзера")
+public class UserTest {
+    String id = "dummy";
+    User user = new User("TestUser");
 
     @Test
     @DisplayName("Получение идентификатора")
-    void authorIdTest(){
-        Assertions.assertEquals("1", author.getId().toString());
-    }
-
-    @Test
-    @DisplayName("Получение имени")
-    void authorFNameTest(){
-        Assertions.assertEquals("fnametest", author.getFname());
-    }
-
-    @Test
-    @DisplayName("Получение фамилии")
-    void authorLNameTest(){
-        Assertions.assertEquals("lnametest", author.getLname());
+    void userIdTest(){
+        Assertions.assertEquals("TestUser", user.getId());
     }
 }
