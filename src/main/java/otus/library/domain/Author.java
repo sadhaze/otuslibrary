@@ -1,9 +1,12 @@
 package otus.library.domain;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@Proxy(lazy = false)
 public class Author {
     @Id
     private Long id;

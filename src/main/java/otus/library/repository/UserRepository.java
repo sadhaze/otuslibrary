@@ -1,11 +1,7 @@
 package otus.library.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import otus.library.domain.User;
-import java.util.List;
 
-public interface UserRepository {
-    Long count();
-    void insert(User user);
-    User getById(String id);
-    List<User> getAll();
+public interface UserRepository extends JpaRepository<User, String> {
 }

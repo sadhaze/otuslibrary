@@ -1,10 +1,13 @@
 package otus.library.domain;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
+@Proxy(lazy = false)
 public class Comment {
     @Id
     private Long id;

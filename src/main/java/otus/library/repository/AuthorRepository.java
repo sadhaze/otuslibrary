@@ -1,11 +1,7 @@
 package otus.library.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import otus.library.domain.Author;
-import java.util.List;
 
-public interface AuthorRepository {
-    Long count();
-    void insert(Author author);
-    Author getById(Long id);
-    List<Author> getAll();
+public interface AuthorRepository extends JpaRepository<Author, Long> {
 }
