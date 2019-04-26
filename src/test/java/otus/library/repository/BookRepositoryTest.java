@@ -5,11 +5,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import otus.library.domain.Author;
 import otus.library.domain.Book;
 import otus.library.domain.Genre;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @DisplayName("Тест DAO книг")
 public class BookRepositoryTest {
     @Autowired
@@ -30,13 +32,13 @@ public class BookRepositoryTest {
     @Test
     @DisplayName("Получение списка книг")
     void bookDaoGetAllTest(){
-        Assertions.assertEquals("Ruslan i Lyudmila", bookRepository.findAll().get(1).getName());
+        Assertions.assertEquals("TestRuslan i Lyudmila", bookRepository.findAll().get(1).getName());
     }
 
     @Test
     @DisplayName("Вставка и получение книги")
     void bookDaoInsertAndGetByIdTest(){
-        Long id = new Long(10);
+        Long id = 10L;
         authorRepository.save(new Author(id, "TestFName", "TestLName"));
         genreRepository.save(new Genre(id, "TestGenre"));
         bookRepository.save(

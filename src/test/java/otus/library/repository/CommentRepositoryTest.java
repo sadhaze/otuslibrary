@@ -5,9 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import otus.library.domain.*;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @DisplayName("Тест JPA комментариев")
 public class CommentRepositoryTest {
     @Autowired
@@ -34,13 +36,13 @@ public class CommentRepositoryTest {
     @Test
     @DisplayName("Получение списка комментариев")
     void commentJpaGetAllTest(){
-        Assertions.assertEquals("This book is bullshit", commentRepository.findAll().get(0).getComment());
+        Assertions.assertEquals("TestThis book is bullshit", commentRepository.findAll().get(0).getComment());
     }
 
     @Test
     @DisplayName("Вставка и получение комментария")
     void commentJpaInsertAndGetByIdTest(){
-        Long id = new Long(10);
+        Long id = 10L;
         String user = "TestUser";
 
         authorRepository.save(new Author(id, "TestFName", "TestLName"));

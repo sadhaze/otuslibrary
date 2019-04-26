@@ -5,9 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import otus.library.domain.Genre;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @DisplayName("Тест DAO жанров")
 public class GenreRepositoryTest {
     @Autowired
@@ -22,13 +24,13 @@ public class GenreRepositoryTest {
     @Test
     @DisplayName("Получение списка жанров")
     void genreDaoGetAllTest(){
-        Assertions.assertEquals("Novel", genreRepository.findAll().get(1).getName());
+        Assertions.assertEquals("TestNovel", genreRepository.findAll().get(1).getName());
     }
 
     @Test
     @DisplayName("Вставка и получение жанра")
     void genreDaoInsertAndGetByIdTest(){
-        Long id = new Long(1000);
+        Long id = 1000L;
         genreRepository.save(new Genre(id, "genretest"));
         Assertions.assertEquals("genretest", genreRepository.getOne(1000L).getName());
     }

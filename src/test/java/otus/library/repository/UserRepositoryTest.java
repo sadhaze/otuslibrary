@@ -5,9 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import otus.library.domain.User;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @DisplayName("Тест JPA пользователей")
 public class UserRepositoryTest {
     @Autowired
@@ -22,7 +24,7 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("Получение списка пользователей")
     void userJpaGetAllTest(){
-        Assertions.assertEquals("SuperAdmin", userRepository.findAll().get(0).getId());
+        Assertions.assertEquals("TestSuperAdmin", userRepository.findAll().get(0).getId());
     }
 
     @Test

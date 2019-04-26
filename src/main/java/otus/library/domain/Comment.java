@@ -2,10 +2,23 @@ package otus.library.domain;
 
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+@NamedEntityGraph(
+        name = "comment-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("user")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "book-entity-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("author"),
+                                @NamedAttributeNode("genre")
+                        }
+                )
+        }
+)
 @Entity
 @Proxy(lazy = false)
 public class Comment {

@@ -6,21 +6,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 @SpringBootTest(properties = {
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
 @DisplayName("Тест книг")
 public class BookTest {
-    Long id = new Long(1);
+    Long id = 1L;
     Book book = new Book(
             id,
             "booktest",
-            new Author(new Long(11),
+            new Author(11L,
                     "testauthorfname",
                     "testauthorlname"),
-            new Genre(new Long(12),
+            new Genre(12L,
                     "testgenre"));
 
     @Test

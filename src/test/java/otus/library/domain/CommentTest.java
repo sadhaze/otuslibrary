@@ -6,14 +6,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 @SpringBootTest(properties = {
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
 @DisplayName("Тест комментариев")
 public class CommentTest {
-    Long id = new Long(10);
+    Long id = 10L;
     Author author = new Author(id, "ftest", "ltest");
     Genre genre = new Genre(id, "TestGenre");
     Book book = new Book(id, "TestBook", author, genre);
