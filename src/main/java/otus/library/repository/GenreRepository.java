@@ -1,7 +1,7 @@
 package otus.library.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import otus.library.domain.Genre;
 
-public interface GenreRepository extends JpaRepository<Genre, Long> {
+public interface GenreRepository extends CrudRepository<Genre, Long> {
 }

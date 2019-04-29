@@ -1,34 +1,15 @@
 package otus.library.domain;
 
-import org.hibernate.annotations.Proxy;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@NamedEntityGraph(
-        name = "comment-entity-graph",
-        attributeNodes = {
-                @NamedAttributeNode("user")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "book-entity-graph",
-                        attributeNodes = {
-                                @NamedAttributeNode("author"),
-                                @NamedAttributeNode("genre")
-                        }
-                )
-        }
-)
-@Entity
-@Proxy(lazy = false)
+@Document
 public class Comment {
     @Id
     private Long id;
 
-    @ManyToOne
     private Book book;
 
-    @ManyToOne
     private User user;
 
     private String comment;

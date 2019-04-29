@@ -1,13 +1,13 @@
 spring:
   profiles: test
-  datasource:
-    data: classpath:/importTest.sql
-    schema: classpath:/schemaTest.sql
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
+  data:
+    mongodb:
+      database: libraryTest
 
 ---
 spring:
   profiles: prod
+  data:
+    mongodb:
+      database: library
+

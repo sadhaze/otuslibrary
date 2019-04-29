@@ -1,7 +1,7 @@
 package otus.library.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import otus.library.domain.Author;
 
-public interface AuthorRepository extends JpaRepository<Author, Long> {
+public interface AuthorRepository extends CrudRepository<Author, Long> {
 }

@@ -1,12 +1,7 @@
 package otus.library.repository;
 
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import otus.library.domain.Book;
 
-import java.util.List;
-
-public interface BookRepository extends JpaRepository<Book, Long> {
-    @EntityGraph("book-entity-graph")
-    List<Book> findAll();
+public interface BookRepository extends CrudRepository<Book, Long> {
 }
