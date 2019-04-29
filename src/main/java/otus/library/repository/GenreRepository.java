@@ -1,11 +1,7 @@
 package otus.library.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import otus.library.domain.Genre;
-import java.util.List;
 
-public interface GenreRepository {
-    Long count();
-    void insert(Genre genre);
-    Genre getById(Long id);
-    List<Genre> getAll();
+public interface GenreRepository extends JpaRepository<Genre, Long> {
 }

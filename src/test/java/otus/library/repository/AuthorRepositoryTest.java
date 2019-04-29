@@ -5,11 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import otus.library.domain.Author;
 
 @DataJpaTest
-@Import(AuthorRepositoryJpa.class)
+@ActiveProfiles("test")
 @DisplayName("Тест DAO авторов")
 public class AuthorRepositoryTest {
     @Autowired
@@ -18,21 +18,21 @@ public class AuthorRepositoryTest {
     @Test
     @DisplayName("Получение количества авторов")
     void authorDaoCountTest(){
-        Assertions.assertEquals("3", authorRepository.count().toString());
+        Assertions.assertEquals(3L, authorRepository.count());
     }
 
     @Test
     @DisplayName("Получение списка авторов")
     void authorDaoGetAllTest(){
-        Assertions.assertEquals("Alex", authorRepository.getAll().get(1).getFname());
+        Assertions.assertEquals("TestAlex", authorRepository.findAll().get(1).getFname());
     }
 
     @Test
     @DisplayName("Вставка и получение автора")
     void authorDaoInsertAndGetByIdTest(){
-        Long id = new Long(10);
-        authorRepository.insert(new Author(id, "authorFNameTest", "authorLNameTest"));
-        Assertions.assertEquals("authorFNameTest", authorRepository.getById(id).getFname());
-        Assertions.assertEquals("authorLNameTest", authorRepository.getById(id).getLname());
+        Long id = 10L;
+        authorRepository.save(new Author(id, "authorFNameTest", "authorLNameTest"));
+        Assertions.assertEquals("authorFNameTest", authorRepository.getOne(id).getFname());
+        Assertions.assertEquals("authorLNameTest", authorRepository.getOne(id).getLname());
     }
 }

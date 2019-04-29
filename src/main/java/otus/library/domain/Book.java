@@ -1,10 +1,18 @@
 package otus.library.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Proxy;
 
+import javax.persistence.*;
+
+@NamedEntityGraph(
+        name = "book-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("author"),
+                @NamedAttributeNode("genre")
+        }
+)
 @Entity
+@Proxy(lazy = false)
 public class Book {
     @Id
     private Long id;

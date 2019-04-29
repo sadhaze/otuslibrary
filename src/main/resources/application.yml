@@ -1,0 +1,13 @@
+spring:
+  profiles: test
+  datasource:
+    data: classpath:/importTest.sql
+    schema: classpath:/schemaTest.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+---
+spring:
+  profiles: prod
