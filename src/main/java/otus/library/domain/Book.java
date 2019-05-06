@@ -1,33 +1,35 @@
 package otus.library.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Book {
     @Id
-    private Long id;
+    private String id;
 
     private String name;
 
+    @DBRef
     private Author author;
 
+    @DBRef
     private Genre genre;
 
     public Book(){}
 
-    public Book(Long id, String name, Author author, Genre genre){
-        this.setId(id);
+    public Book(String name, Author author, Genre genre){
         this.setName(name);
         this.setAuthor(author);
         this.setGenre(genre);
     }
 
-    public Long getId(){
+    public String getId(){
         return this.id;
     }
 
-    public void setId(Long id){
+    public void setId(String id){
         this.id = id;
     }
 

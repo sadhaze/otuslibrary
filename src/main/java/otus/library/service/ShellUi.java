@@ -8,7 +8,7 @@ import otus.library.repository.*;
 import java.util.List;
 
 @ShellComponent
-public class ShellUi {
+public class ShellUi{
     AuthorRepository authorRepository;
     BookRepository bookRepository;
     CommentRepository commentRepository;
@@ -29,8 +29,8 @@ public class ShellUi {
     }
 
     @ShellMethod(value = "Show author by ID")
-    public String getAuthor(Long id){
-        Author author = authorRepository.findById(id).get();
+    public String getAuthor(String id) throws NoEntityExeption{
+        Author author = authorRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
         return "Author by number " + author.getId() + " is " + author.getFname() + " " + author.getLname();
     }
 
@@ -46,13 +46,13 @@ public class ShellUi {
     }
 
     @ShellMethod(value = "Insert new author")
-    public void insertAuthor(Long id, String fname, String lname){
-        authorRepository.save(new Author(id, fname, lname));
+    public void insertAuthor(String fname, String lname){
+        authorRepository.save(new Author(fname, lname));
     }
 
     @ShellMethod(value = "Show book by ID")
-    public String getBook(Long id){
-        Book book = bookRepository.findById(id).get();
+    public String getBook(String id) throws NoEntityExeption{
+        Book book = bookRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
         return "Book by number " + book.getId() + " is " + book.getName()
                 + ". Genre: " + book.getGenre().getName()
                 + ". Author: " + book.getAuthor().getFname() + " "
@@ -75,13 +75,15 @@ public class ShellUi {
     }
 
     @ShellMethod(value = "Insert new book")
-    public void insertBook(Long id, String name, Long author, Long genre){
-        bookRepository.save(new Book(id, name, authorRepository.findById(author).get(), genreRepository.findById(genre).get()));
+    public void insertBook(String name, String author, String genre) throws NoEntityExeption {
+        bookRepository.save(new Book(name,
+                                    authorRepository.findById(author).orElseThrow(() -> new NoEntityExeption(author)),
+                                    genreRepository.findById(genre).orElseThrow(() -> new NoEntityExeption(genre))));
     }
 
     @ShellMethod(value = "Show comment by ID")
-    public String getComment(Long id){
-        Comment comment = commentRepository.findById(id).get();
+    public String getComment(String id) throws NoEntityExeption {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
         return "Comment by number " + comment.getId() + " is " + comment.getComment();
     }
 
@@ -97,13 +99,15 @@ public class ShellUi {
     }
 
     @ShellMethod(value = "Insert new comment")
-    public void insertComment(Long id, Long book, String user, String comment){
-        commentRepository.save(new Comment(id, bookRepository.findById(book).get(), userRepository.findById(user).get(), comment));
+    public void insertComment(String book, String user, String comment) throws NoEntityExeption{
+        commentRepository.save(new Comment(bookRepository.findById(book).orElseThrow(() -> new NoEntityExeption(book)),
+                                            userRepository.findById(user).orElseThrow(() -> new NoEntityExeption(user)),
+                                            comment));
     }
 
     @ShellMethod(value = "Show genre by ID")
-    public String getGenre(Long id){
-        Genre genre = genreRepository.findById(id).get();
+    public String getGenre(String id) throws NoEntityExeption {
+        Genre genre = genreRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
         return "Genre by number " + genre.getId() + " is " + genre.getName();
     }
 
@@ -119,13 +123,13 @@ public class ShellUi {
     }
 
     @ShellMethod(value = "Insert new genre")
-    public void insertGenre(Long id, String name){
-        genreRepository.save(new Genre(id, name));
+    public void insertGenre(String name){
+        genreRepository.save(new Genre(name));
     }
 
     @ShellMethod(value = "Show user by ID")
-    public String getUser(String id){
-        User user = userRepository.findById(id).get();
+    public String getUser(String id) throws NoEntityExeption {
+        User user = userRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
         return user != null ? "User by number " + user.getId() + " is exist" : "User by number " + id + " dos't exist";
     }
 
@@ -143,5 +147,11 @@ public class ShellUi {
     @ShellMethod(value = "Insert new user")
     public void insertUser(String id){
         userRepository.save(new User(id));
+    }
+}
+
+class NoEntityExeption extends Exception{
+    public NoEntityExeption(String entityId){
+        super("Author whit ID " + entityId + " is missing");
     }
 }

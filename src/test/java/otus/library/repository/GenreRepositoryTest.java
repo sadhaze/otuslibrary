@@ -5,18 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import otus.library.domain.Genre;
-
 import java.util.Iterator;
 
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+@DataMongoTest
 @ActiveProfiles("test")
 @DisplayName("Тест DAO жанров")
 public class GenreRepositoryTest {
@@ -26,18 +21,20 @@ public class GenreRepositoryTest {
     @BeforeEach
     void dbWiper(){
         genreRepository.deleteAll();
-        genreRepository.save(new Genre(0L, "g1"));
-        genreRepository.save(new Genre(1L, "g2"));
-        genreRepository.save(new Genre(2L, "g3"));
+        genreRepository.save(new Genre("g1"));
+        genreRepository.save(new Genre("g2"));
+        genreRepository.save(new Genre("g3"));
     }
 
     @Test
+    @DirtiesContext
     @DisplayName("Получение количества жанров")
     void genreDaoCountTest(){
         Assertions.assertEquals(3L, genreRepository.count());
     }
 
     @Test
+    @DirtiesContext
     @DisplayName("Получение списка жанров")
     void genreDaoGetAllTest(){
         Iterator<Genre> iterator = genreRepository.findAll().iterator();
@@ -47,8 +44,9 @@ public class GenreRepositoryTest {
     }
 
     @Test
+    @DirtiesContext
     @DisplayName("Вставка и получение жанра")
     void genreDaoInsertAndGetByIdTest(){
-        Assertions.assertEquals("g1", genreRepository.findById(0L).get().getName());
+        Assertions.assertEquals("g1", genreRepository.findById("0").get().getName());
     }
 }
