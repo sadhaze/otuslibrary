@@ -12,13 +12,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @DisplayName("Тест книг")
 public class BookTest {
-    Book book = new Book("booktest",
-            new Author("testauthorfname",
-                    "testauthorlname"),
-            new Genre("testgenre"));
+    Author author = new Author("testauthorfname","testauthorlname");
+    Genre genre = new  Genre("testgenre");
+    Book book = new Book("booktest", author, genre);
 
     @BeforeEach
     void setId(){
+        author.setId("11");
+        genre.setId("12");
         book.setId("1");
     }
 
@@ -26,7 +27,7 @@ public class BookTest {
     @DirtiesContext
     @DisplayName("Получение идентификатора")
     void bookIdTest(){
-        Assertions.assertEquals("1", book.getId().toString());
+        Assertions.assertEquals("1", book.getId());
     }
 
     @Test
@@ -40,13 +41,13 @@ public class BookTest {
     @DirtiesContext
     @DisplayName("Получение иидентификатора автора")
     void bookAutorIdTest(){
-        Assertions.assertEquals("11", book.getAuthor().getId().toString());
+        Assertions.assertEquals("11", book.getAuthor().getId());
     }
 
     @Test
     @DirtiesContext
     @DisplayName("Получение идентификатора жанра")
     void authorLNameTest(){
-        Assertions.assertEquals("12", book.getGenre().getId().toString());
+        Assertions.assertEquals("12", book.getGenre().getId());
     }
 }

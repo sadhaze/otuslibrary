@@ -50,6 +50,11 @@ public class ShellUi{
         authorRepository.save(new Author(fname, lname));
     }
 
+    @ShellMethod(value = "Delete author")
+    public void deleteAuthor(String id){
+        authorRepository.deleteById(id);
+    }
+
     @ShellMethod(value = "Show book by ID")
     public String getBook(String id) throws NoEntityExeption{
         Book book = bookRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
@@ -81,6 +86,11 @@ public class ShellUi{
                                     genreRepository.findById(genre).orElseThrow(() -> new NoEntityExeption(genre))));
     }
 
+    @ShellMethod(value = "Delete book")
+    public void deleteBook(String id){
+        bookRepository.deleteById(id);
+    }
+
     @ShellMethod(value = "Show comment by ID")
     public String getComment(String id) throws NoEntityExeption {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoEntityExeption(id));
@@ -90,7 +100,10 @@ public class ShellUi{
     @ShellMethod(value = "Show all comments")
     public void getCommentAll(){
         Iterable<Comment> comment = commentRepository.findAll();
-        comment.forEach(item->System.out.println(item.getId() + ": " + item.getComment() + "\n"));
+        comment.forEach(item->System.out.println(item.getId() + ": Воок with name "
+                + item.getBook().getName() + " have comment from user "
+                + item.getUser().getId() + ": "
+                + item.getComment() + "\n"));
     }
 
     @ShellMethod(value = "Show comment count")

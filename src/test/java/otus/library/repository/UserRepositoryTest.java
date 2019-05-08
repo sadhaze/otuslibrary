@@ -20,7 +20,6 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void dbWiper(){
-        userRepository.deleteAll();
         userRepository.save(new User("u1"));
         userRepository.save(new User("u2"));
         userRepository.save(new User("u3"));

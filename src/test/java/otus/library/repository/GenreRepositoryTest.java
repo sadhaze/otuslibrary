@@ -20,7 +20,6 @@ public class GenreRepositoryTest {
 
     @BeforeEach
     void dbWiper(){
-        genreRepository.deleteAll();
         genreRepository.save(new Genre("g1"));
         genreRepository.save(new Genre("g2"));
         genreRepository.save(new Genre("g3"));
@@ -47,6 +46,7 @@ public class GenreRepositoryTest {
     @DirtiesContext
     @DisplayName("Вставка и получение жанра")
     void genreDaoInsertAndGetByIdTest(){
-        Assertions.assertEquals("g1", genreRepository.findById("0").get().getName());
+        Iterator<Genre> iterator = genreRepository.findAll().iterator();
+        Assertions.assertEquals("g1", genreRepository.findById(iterator.next().getId()).get().getName());
     }
 }

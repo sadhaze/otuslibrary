@@ -1,7 +1,7 @@
 package otus.library.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import otus.library.domain.Comment;
 
-public interface CommentRepository extends CrudRepository<Comment, String> {
+public interface CommentRepository extends MongoRepository<Comment, String> {
 }

@@ -28,21 +28,17 @@ public class BookRepositoryTest {
 
     @BeforeEach
     void dbWiper(){
-        bookRepository.deleteAll();
-        authorRepository.deleteAll();
-        genreRepository.deleteAll();
-        String id1 = "0";
-        String id2 = "1";
-        String id3 = "2";
         authorRepository.save(new Author("fn1", "ln1"));
         authorRepository.save(new Author("fn2", "ln2"));
         authorRepository.save(new Author("fn3", "ln3"));
         genreRepository.save(new Genre("g1"));
         genreRepository.save(new Genre("g2"));
         genreRepository.save(new Genre("g3"));
-        bookRepository.save(new Book("b1", authorRepository.findById(id1).get(), genreRepository.findById(id1).get()));
-        bookRepository.save(new Book("b2", authorRepository.findById(id2).get(), genreRepository.findById(id2).get()));
-        bookRepository.save(new Book("b3", authorRepository.findById(id3).get(), genreRepository.findById(id3).get()));
+        Iterator<Author> iteratorAuthor = authorRepository.findAll().iterator();
+        Iterator<Genre> iteratorGenre = genreRepository.findAll().iterator();
+        bookRepository.save(new Book("b1", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
+        bookRepository.save(new Book("b2", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
+        bookRepository.save(new Book("b3", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
     }
 
     @Test
@@ -66,7 +62,8 @@ public class BookRepositoryTest {
     @DirtiesContext
     @DisplayName("Вставка и получение книги")
     void bookDaoInsertAndGetByIdTest(){
-        Book book = bookRepository.findById("0").get();
+        Iterator<Book> iterator = bookRepository.findAll().iterator();
+        Book book = bookRepository.findById(iterator.next().getId()).get();
         Assertions.assertEquals("b1", book.getName());
         Assertions.assertEquals("fn1", book.getAuthor().getFname());
         Assertions.assertEquals("ln1", book.getAuthor().getLname());

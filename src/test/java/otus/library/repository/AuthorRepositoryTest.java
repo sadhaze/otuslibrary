@@ -46,7 +46,9 @@ public class AuthorRepositoryTest {
     @DirtiesContext
     @DisplayName("Вставка и получение автора")
     void authorDaoInsertAndGetByIdTest(){
-        Assertions.assertEquals("fn1", authorRepository.findById("0").get().getFname());
-        Assertions.assertEquals("ln1", authorRepository.findById("0").get().getLname());
+        Iterator<Author> iterator = authorRepository.findAll().iterator();
+        String id = iterator.next().getId();
+        Assertions.assertEquals("fn1", authorRepository.findById(id).get().getFname());
+        Assertions.assertEquals("ln1", authorRepository.findById(id).get().getLname());
     }
 }

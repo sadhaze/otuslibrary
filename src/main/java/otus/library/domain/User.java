@@ -11,14 +11,14 @@ public class User {
     public User(){}
 
     public User(String user){
-        this.serId(user);
+        this.setId(user);
     }
 
     public String getId(){
         return this.id;
     }
 
-    public void serId(String user){
+    public void setId(String user){
         this.id = user;
     }
 }

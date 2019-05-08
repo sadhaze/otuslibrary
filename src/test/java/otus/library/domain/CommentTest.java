@@ -21,6 +21,7 @@ public class CommentTest {
 
     @BeforeEach
     void setId(){
+        book.setId("10");
         comment.setId("1");
     }
 
@@ -28,7 +29,7 @@ public class CommentTest {
     @DirtiesContext
     @DisplayName("Получение идентификатора")
     void commentIdTest(){
-        Assertions.assertEquals("10", comment.getId());
+        Assertions.assertEquals("1", comment.getId());
     }
 
     @Test

@@ -32,29 +32,24 @@ public class CommentRepositoryTest {
 
     @BeforeEach
     void dbWiper(){
-        bookRepository.deleteAll();
-        authorRepository.deleteAll();
-        genreRepository.deleteAll();
-        userRepository.deleteAll();
-        commentRepository.deleteAll();
-        String id1 = "0";
-        String id2 = "1";
-        String id3 = "2";
         authorRepository.save(new Author("fn1", "ln1"));
         authorRepository.save(new Author("fn2", "ln2"));
         authorRepository.save(new Author("fn3", "ln3"));
         genreRepository.save(new Genre("g1"));
         genreRepository.save(new Genre("g2"));
         genreRepository.save(new Genre("g3"));
-        bookRepository.save(new Book("b1", authorRepository.findById(id1).get(), genreRepository.findById(id1).get()));
-        bookRepository.save(new Book("b2", authorRepository.findById(id2).get(), genreRepository.findById(id2).get()));
-        bookRepository.save(new Book("b3", authorRepository.findById(id3).get(), genreRepository.findById(id3).get()));
+        Iterator<Author> iteratorAuthor = authorRepository.findAll().iterator();
+        Iterator<Genre> iteratorGenre = genreRepository.findAll().iterator();
+        bookRepository.save(new Book("b1", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
+        bookRepository.save(new Book("b2", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
+        bookRepository.save(new Book("b3", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
         userRepository.save(new User("u1"));
         userRepository.save(new User("u2"));
         userRepository.save(new User("u3"));
-        commentRepository.save(new Comment(bookRepository.findById(id1).get(), userRepository.findById("u1").get(), "c1"));
-        commentRepository.save(new Comment(bookRepository.findById(id2).get(), userRepository.findById("u2").get(), "c2"));
-        commentRepository.save(new Comment(bookRepository.findById(id3).get(), userRepository.findById("u3").get(), "c3"));
+        Iterator<Book> iteratorBook = bookRepository.findAll().iterator();
+        commentRepository.save(new Comment(bookRepository.findById(iteratorBook.next().getId()).get(), userRepository.findById("u1").get(), "c1"));
+        commentRepository.save(new Comment(bookRepository.findById(iteratorBook.next().getId()).get(), userRepository.findById("u2").get(), "c2"));
+        commentRepository.save(new Comment(bookRepository.findById(iteratorBook.next().getId()).get(), userRepository.findById("u3").get(), "c3"));
 
     }
 
@@ -79,6 +74,7 @@ public class CommentRepositoryTest {
     @DirtiesContext
     @DisplayName("Вставка и получение комментария")
     void commentJpaInsertAndGetByIdTest(){
-        Assertions.assertEquals("c1", commentRepository.findById("0").get().getComment());
+        Iterator<Comment> iterator = commentRepository.findAll().iterator();
+        Assertions.assertEquals("c1", commentRepository.findById(iterator.next().getId()).get().getComment());
     }
 }
