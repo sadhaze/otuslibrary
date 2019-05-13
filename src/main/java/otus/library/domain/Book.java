@@ -1,44 +1,35 @@
 package otus.library.domain;
 
-import org.hibernate.annotations.Proxy;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@NamedEntityGraph(
-        name = "book-entity-graph",
-        attributeNodes = {
-                @NamedAttributeNode("author"),
-                @NamedAttributeNode("genre")
-        }
-)
-@Entity
-@Proxy(lazy = false)
+@Document
 public class Book {
     @Id
-    private Long id;
+    private String id;
 
     private String name;
 
-    @ManyToOne
+    @DBRef
     private Author author;
 
-    @ManyToOne
+    @DBRef
     private Genre genre;
 
     public Book(){}
 
-    public Book(Long id, String name, Author author, Genre genre){
-        this.setId(id);
+    public Book(String name, Author author, Genre genre){
         this.setName(name);
         this.setAuthor(author);
         this.setGenre(genre);
     }
 
-    public Long getId(){
+    public String getId(){
         return this.id;
     }
 
-    public void setId(Long id){
+    public void setId(String id){
         this.id = id;
     }
 

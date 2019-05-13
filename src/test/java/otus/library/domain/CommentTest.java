@@ -1,47 +1,53 @@
 package otus.library.domain;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+@DataMongoTest
 @ActiveProfiles("test")
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
 @DisplayName("Тест комментариев")
 public class CommentTest {
-    Long id = 10L;
-    Author author = new Author(id, "ftest", "ltest");
-    Genre genre = new Genre(id, "TestGenre");
-    Book book = new Book(id, "TestBook", author, genre);
+    Author author = new Author("ftest", "ltest");
+    Genre genre = new Genre("TestGenre");
+    Book book = new Book("TestBook", author, genre);
     User user = new User("TestUser");
     String text = "TestComment";
-    Comment comment = new Comment(id, book, user, text);
+    Comment comment = new Comment(book, user, text);
+
+    @BeforeEach
+    void setId(){
+        book.setId("10");
+        comment.setId("1");
+    }
 
     @Test
+    @DirtiesContext
     @DisplayName("Получение идентификатора")
     void commentIdTest(){
-        Assertions.assertEquals("10", comment.getId().toString());
+        Assertions.assertEquals("1", comment.getId());
     }
 
     @Test
+    @DirtiesContext
     @DisplayName("Получение идентификатора книги")
     void commentBookTest(){
-        Assertions.assertEquals("10", comment.getBook().getId().toString());
+        Assertions.assertEquals("10", comment.getBook().getId());
     }
 
     @Test
+    @DirtiesContext
     @DisplayName("Получение пользователя оставившего комментарий")
     void commentUserTest(){
         Assertions.assertEquals("TestUser", comment.getUser().getId());
     }
 
     @Test
+    @DirtiesContext
     @DisplayName("Получение комментария")
     void commentTest(){
         Assertions.assertEquals("TestComment", comment.getComment());

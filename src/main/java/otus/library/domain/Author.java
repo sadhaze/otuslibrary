@@ -1,32 +1,28 @@
 package otus.library.domain;
 
-import org.hibernate.annotations.Proxy;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
-@Proxy(lazy = false)
+@Document
 public class Author {
     @Id
-    private Long id;
+    private String id;
 
     private String fname;
     private String lname;
 
     public Author(){}
 
-    public Author(Long id, String fname, String lname){
-        this.setId(id);
+    public Author(String fname, String lname){
         this.setFname(fname);
         this.setLname(lname);
     }
 
-    public Long getId(){
+    public String getId(){
         return this.id;
     }
 
-    public void setId(Long id){
+    public void setId(String id){
         this.id = id;
     }
 
