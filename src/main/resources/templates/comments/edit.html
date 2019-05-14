@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit comment</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        input:read-only {
+            background: lightgray;
+        }
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Comment Info:</h1>
+<a href="/comments">Back to comments list</a>
+<form id="edit-form" th:action="@{/comments/save}" class="comments">
+    <div class="row">
+        <label>ID:&nbsp;</label>
+        <input type={text, submit} th:name="id" th:value="${comments.id}" readonly/>
+    </div>
+    <div class="row">
+        <label>Book ID:&nbsp;</label>
+        <input type={text, submit} th:name="bookId" th:value="${comments.book} ? ${comments.book.getId()} : 'Book unknown'"/>
+    </div>
+    <div class="row">
+        <label>User ID:&nbsp;</label>
+        <input type={text, submit} th:name="userId" th:value="${comments.user} ? ${comments.user.getId()} : 'User unknown'"/>
+    </div>
+    <div class="row">
+        <label>Comment:&nbsp;</label>
+        <input type={text, submit} th:name="comment" th:value="${comments.comment}"/>
+    </div>
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

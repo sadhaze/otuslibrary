@@ -53,6 +53,7 @@ public class ShellUi{
     @ShellMethod(value = "Delete author")
     public void deleteAuthor(String id){
         authorRepository.deleteById(id);
+        authorRepository.deleteById(id);
     }
 
     @ShellMethod(value = "Show book by ID")

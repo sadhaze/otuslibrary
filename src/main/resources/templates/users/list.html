@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all users</title>
+    <style type="text/css">
+        li {
+            list-style-type: none;
+        }
+        body {
+            padding: 50px;
+        }
+        .genres, .genres td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Users:</h1>
+<a href="/">Back to main page</a>
+<table class="users">
+    <thead>
+    <tr>
+        <th>ID</th>
+    </tr>
+    </thead>
+    <tbody>
+        <li th:each="user : ${users}">
+            <tr>
+                <td th:text="${user.id}">dummy</td>
+                <td>
+                    <a th:href="@{/users/delete(id=${user.id})}">Delete</a>
+                </td>
+            </tr>
+        </li>
+    </tbody>
+</table>
+<br><a href="/users/new">Create new user</a>
+</body>
+</html>

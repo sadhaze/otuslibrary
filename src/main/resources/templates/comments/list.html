@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all comments</title>
+    <style type="text/css">
+        li {
+            list-style-type: none;
+        }
+        body {
+            padding: 50px;
+        }
+        .comments, .comments td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Comments:</h1>
+<a href="/">Back to main page</a>
+<table class="comments">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Book ID</th>
+        <th>User ID</th>
+        <th>Comment</th>
+    </tr>
+    </thead>
+    <tbody>
+        <li th:each="comment : ${comments}">
+            <tr>
+                <td th:text="${comment.id}">1</td>
+                <td th:text="${comment.book} ? ${comment.book.getName()} : 'Book unknown'">dum</td>
+                <td th:text="${comment.user} ? ${comment.user.getId()} : 'User unknown'">dum</td>
+                <td th:text="${comment.comment}">dum</td>
+                <td>
+                    <a th:href="@{/comments/edit(id=${comment.id})}">Edit</a>
+                </td>
+                <td>
+                    <a th:href="@{/comments/delete(id=${comment.id})}">Delete</a>
+                </td>
+            </tr>
+        </li>
+    </tbody>
+</table>
+<br><a href="/comments/new">Create new comment</a>
+</body>
+</html>

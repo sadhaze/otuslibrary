@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit genre</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        input:read-only {
+            background: lightgray;
+        }
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Genre Info:</h1>
+<a href="/genres">Back to genres list</a>
+<form id="edit-form" th:action="@{/genres/save}" class="genres">
+    <div class="row">
+        <label>ID:&nbsp;</label>
+        <input type={text, submit} th:name="id" th:value="${genres.id}" readonly/>
+    </div>
+    <div class="row">
+        <label>Last name:&nbsp;</label>
+        <input type={text, submit} th:name="name" th:value="${genres.name}"/>
+    </div>
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>
