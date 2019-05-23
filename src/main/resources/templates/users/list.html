@@ -30,7 +30,11 @@
             <tr>
                 <td th:text="${user.id}">dummy</td>
                 <td>
-                    <a th:href="@{/users/delete(id=${user.id})}">Delete</a>
+                    <form id="edit-form" th:action="@{/users/delete}" method=POST>
+                        <div class="row">
+                            <button type="submit" th:name="id" th:value="${user.id}">Delete</button>
+                        </div>
+                    </form>
                 </td>
             </tr>
         </li>

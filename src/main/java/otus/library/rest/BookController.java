@@ -8,8 +8,11 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import otus.library.domain.Author;
 import otus.library.domain.Book;
+import otus.library.domain.Genre;
 import otus.library.repository.AuthorRepository;
 import otus.library.repository.BookRepository;
 import otus.library.repository.GenreRepository;
@@ -42,38 +45,51 @@ public class BookController {
     @GetMapping("/books/edit")
     public String editPage(@RequestParam("id") String id, Model model) {
         Book books = bookRepository.findById(id).orElseThrow(NotFoundException::new);
+        List<Author> authors = authorRepository.findAll();
+        List<Genre> genres = genreRepository.findAll();
         model.addAttribute("books", books);
+        model.addAttribute("authors", authors);
+        model.addAttribute("genres", genres);
         return "books/edit";
     }
 
-    @GetMapping("/books/create")
-    public String createBook(@RequestParam("name") String name, @RequestParam("authorId") String authorId, @RequestParam("genreId") String genreId) {
+    @PostMapping("/books/create")
+    public String createBook(@RequestParam("name") String name, @RequestParam("authorId") String authorId, @RequestParam("genreId") String genreId, Model model) {
         bookRepository.save(new Book(name,
                 authorRepository.findById(authorId).orElseThrow(NotFoundException::new),
                 genreRepository.findById(genreId).orElseThrow(NotFoundException::new)));
-        return "books/save";
+        model.addAttribute("backref", "/books");
+        return "save";
     }
 
-    @GetMapping("/books/delete")
-    public String deleteBook(@RequestParam("id") String id) {
+    @PostMapping("/books/delete")
+    public String deleteBook(@RequestParam("id") String id, Model model) {
         bookRepository.deleteById(id);
-        return "books/save";
+        model.addAttribute("backref", "/books");
+        return "save";
     }
 
     @GetMapping("/books/new")
-    public String newPage() {
+    public String newPage(Model model) {
+        List<Author> authors = authorRepository.findAll();
+        List<Genre> genres = genreRepository.findAll();
+        model.addAttribute("authors", authors);
+        model.addAttribute("genres", genres);
         return "books/new";
     }
 
-    @GetMapping("/books/save")
-    public void saveBook(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("authorId") String authorId, @RequestParam("genreId") String genreId) {
+    @PostMapping("/books/save")
+    public String saveBook(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("authorId") String authorId, @RequestParam("genreId") String genreId, Model model) {
         Query query = new Query(Criteria.where("id").is(id));
         if(mongoOperations.exists(query, Book.class)){
             Update update = new Update();
             update.set("name", name);
             update.set("author", authorRepository.findById(authorId).orElseThrow(NotFoundException::new));
             update.set("genre", genreRepository.findById(genreId).orElseThrow(NotFoundException::new));
+
             mongoOperations.findAndModify(query, update, Book.class);
         }
+        model.addAttribute("backref", "/books");
+        return "save";
     }
 }

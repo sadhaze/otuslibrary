@@ -22,7 +22,7 @@
 <body>
 <h1>Book Info:</h1>
 <a href="/books">Back to books list</a>
-<form id="edit-form" th:action="@{/books/save}" class="books">
+<form id="edit-form" th:action="@{/books/save}" class="books" method=POST>
     <div class="row">
         <label>ID:&nbsp;</label>
         <input type={text, submit} th:name="id" th:value="${books.id}" readonly/>
@@ -33,11 +33,23 @@
     </div>
     <div class="row">
         <label>Author ID:&nbsp;</label>
-        <input type={text, submit} th:name="authorId" th:value="${books.author} ? ${books.author.getId()} : 'Author unknown'"/>
+        <td>
+            <select th:name="authorId" >
+                <li th:each="author : ${authors}">
+                    <option th:value="${author.getId()}" th:text="${author.getLname()} + ' ' + ${author.getFname()}">Author unknown</option>
+                </li>
+            </select>
+        </td>
     </div>
     <div class="row">
         <label>Genre ID:&nbsp;</label>
-        <input type={text, submit} th:name="genreId" th:value="${books.genre} ? ${books.genre.getId()} : 'Genre unknown'"/>
+        <td>
+            <select th:name="genreId">
+                <li th:each="genre : ${genres}">
+                    <option th:value="${genre.getId()}" th:text="${genre.getName()}">Genre unknown</option>
+                </li>
+            </select>
+        </td>
     </div>
     <div class="row">
         <button type="submit">Save</button>

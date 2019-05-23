@@ -22,7 +22,7 @@
 <body>
 <h1>Author Info:</h1>
 <a href="/authors">Back to authors list</a>
-<form id="edit-form" th:action="@{/authors/save}" class="authors">
+<form id="edit-form" th:action="@{/authors/save}" class="authors" method=POST>
     <div class="row">
         <label>ID:&nbsp;</label>
         <input type={text, submit} th:name="id" th:value="${authors.id}" readonly/>

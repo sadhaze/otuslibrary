@@ -39,16 +39,18 @@ public class AuthorController {
         return "authors/edit";
     }
 
-    @GetMapping("/authors/create")
-    public String createAuthor(@RequestParam("lname") String lname, @RequestParam("fname") String fname) {
+    @PostMapping("/authors/create")
+    public String createAuthor(@RequestParam("lname") String lname, @RequestParam("fname") String fname, Model model) {
         authorRepository.save(new Author(fname, lname));
-        return "authors/save";
+        model.addAttribute("backref", "/authors");
+        return "save";
     }
 
-    @GetMapping("/authors/delete")
-    public String deleteAuthor(@RequestParam("id") String id) {
+    @PostMapping("/authors/delete")
+    public String deleteAuthor(@RequestParam("id") String id, Model model) {
         authorRepository.deleteById(id);
-        return "authors/save";
+        model.addAttribute("backref", "/authors");
+        return "save";
     }
 
     @GetMapping("/authors/new")
@@ -56,8 +58,8 @@ public class AuthorController {
         return "authors/new";
     }
 
-    @GetMapping("/authors/save")
-    public void saveAuthor(@RequestParam("id") String id, @RequestParam("lname") String lname, @RequestParam("fname") String fname) {
+    @PostMapping("/authors/save")
+    public String saveAuthor(@RequestParam("id") String id, @RequestParam("lname") String lname, @RequestParam("fname") String fname, Model model) {
         Query query = new Query(Criteria.where("id").is(id));
         if(mongoOperations.exists(query, Author.class)){
             Update update = new Update();
@@ -65,5 +67,7 @@ public class AuthorController {
             update.set("fname", fname);
             mongoOperations.findAndModify(query, update, Author.class);
         }
+        model.addAttribute("backref", "/authors");
+        return "save";
     }
 }

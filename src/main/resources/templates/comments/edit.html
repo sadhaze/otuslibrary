@@ -22,18 +22,30 @@
 <body>
 <h1>Comment Info:</h1>
 <a href="/comments">Back to comments list</a>
-<form id="edit-form" th:action="@{/comments/save}" class="comments">
+<form id="edit-form" th:action="@{/comments/save}" class="comments" method=POST>
     <div class="row">
         <label>ID:&nbsp;</label>
         <input type={text, submit} th:name="id" th:value="${comments.id}" readonly/>
     </div>
     <div class="row">
         <label>Book ID:&nbsp;</label>
-        <input type={text, submit} th:name="bookId" th:value="${comments.book} ? ${comments.book.getId()} : 'Book unknown'"/>
+        <td>
+            <select th:name="bookId" >
+                <li th:each="book : ${books}">
+                    <option th:value="${book.getId()}" th:text="${book.getName()}">Book unknown</option>
+                </li>
+            </select>
+        </td>
     </div>
     <div class="row">
         <label>User ID:&nbsp;</label>
-        <input type={text, submit} th:name="userId" th:value="${comments.user} ? ${comments.user.getId()} : 'User unknown'"/>
+        <td>
+            <select th:name="userId">
+                <li th:each="user : ${users}">
+                    <option th:value="${user.getId()}" th:text="${user.getId()}">User unknown</option>
+                </li>
+            </select>
+        </td>
     </div>
     <div class="row">
         <label>Comment:&nbsp;</label>

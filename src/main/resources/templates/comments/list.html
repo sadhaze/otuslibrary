@@ -39,7 +39,11 @@
                     <a th:href="@{/comments/edit(id=${comment.id})}">Edit</a>
                 </td>
                 <td>
-                    <a th:href="@{/comments/delete(id=${comment.id})}">Delete</a>
+                    <form id="edit-form" th:action="@{/comments/delete}" method=POST>
+                        <div class="row">
+                            <button type="submit" th:name="id" th:value="${comment.id}">Delete</button>
+                        </div>
+                    </form>
                 </td>
             </tr>
         </li>

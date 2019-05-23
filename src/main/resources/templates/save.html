@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Action status page</title>
@@ -15,6 +15,6 @@
 </head>
 <body>
 <h1>Action is success!</h1>
-<a href="/users">Click to go back</a>
+<a th:href="${backref}">Click to go back</a>
 </body>
 </html>

@@ -22,7 +22,7 @@
 <body>
 <h1>User Info:</h1>
 <a href="/users">Back to users list</a>
-<form id="edit-form" th:action="@{/users/create}" class="users">
+<form id="edit-form" th:action="@{/users/create}" class="users" method=POST>
     <div class="row">
         <label>Id:&nbsp;</label>
         <input type={text, submit} th:name="id" value=""/>

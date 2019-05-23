@@ -22,7 +22,7 @@
 <body>
 <h1>Genre Info:</h1>
 <a href="/genres">Back to genres list</a>
-<form id="edit-form" th:action="@{/genres/create}" class="genres">
+<form id="edit-form" th:action="@{/genres/create}" class="genres" method=POST>
     <div class="row">
         <label>Name:&nbsp;</label>
         <input type={text, submit} th:name="name" value=""/>

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import otus.library.domain.Genre;
 import otus.library.repository.GenreRepository;
@@ -40,16 +41,18 @@ public class GenreController {
         return "genres/edit";
     }
 
-    @GetMapping("/genres/create")
-    public String createGenre(@RequestParam("name") String name) {
+    @PostMapping("/genres/create")
+    public String createGenre(@RequestParam("name") String name, Model model) {
         genreRepository.save(new Genre(name));
-        return "genres/save";
+        model.addAttribute("backref", "/genres");
+        return "save";
     }
 
-    @GetMapping("/genres/delete")
-    public String deleteGenre(@RequestParam("id") String id) {
+    @PostMapping("/genres/delete")
+    public String deleteGenre(@RequestParam("id") String id, Model model) {
         genreRepository.deleteById(id);
-        return "genres/save";
+        model.addAttribute("backref", "/genres");
+        return "save";
     }
 
     @GetMapping("/genres/new")
@@ -57,13 +60,15 @@ public class GenreController {
         return "genres/new";
     }
 
-    @GetMapping("/genres/save")
-    public void saveGenre(@RequestParam("id") String id, @RequestParam("name") String name) {
+    @PostMapping("/genres/save")
+    public String saveGenre(@RequestParam("id") String id, @RequestParam("name") String name, Model model) {
         Query query = new Query(Criteria.where("id").is(id));
         if(mongoOperations.exists(query, Genre.class)){
             Update update = new Update();
             update.set("name", name);
             mongoOperations.findAndModify(query, update, Genre.class);
         }
+        model.addAttribute("backref", "/genres");
+        return "save";
     }
 }

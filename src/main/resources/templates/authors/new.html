@@ -22,7 +22,7 @@
 <body>
 <h1>Author Info:</h1>
 <a href="/authors">Back to authors list</a>
-<form id="edit-form" th:action="@{/authors/create}" class="authors">
+<form id="edit-form" th:action="@{/authors/create}" class="authors" method=POST>
     <div class="row">
         <label>Last name:&nbsp;</label>
         <input type={text, submit} th:name="lname" value=""/>
