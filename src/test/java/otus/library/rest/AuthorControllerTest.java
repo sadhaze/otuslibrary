@@ -34,10 +34,13 @@ public class AuthorControllerTest {
     @MockBean
     private AuthorRepository authorRepository;
 
+    private final String strFname = "testFname";
+    private final String strLname = "testLname";
+    private final Author author = new Author(strFname, strLname);
+
     @Test
     @DisplayName("Проверка страницы /authors")
     public void authorListPageTest() throws Exception {
-        Author author = new Author("testFname", "testLname");
         List<Author> allAuthors = Arrays.asList(author);
 
         given(authorRepository.findAll()).willReturn(allAuthors);
@@ -51,28 +54,21 @@ public class AuthorControllerTest {
     @Test
     @DisplayName("Проверка страницы /authors/edit")
     public void authorEditTest() throws Exception {
-        String str = "testId";
-        String strFname = "testFname";
-        String strLname = "testLname";
-        Optional<Author> author = Optional.ofNullable(new Author(strFname, strLname));
+        Optional<Author> optionalAuthor = Optional.ofNullable(author);
 
-        given(authorRepository.findById(str)).willReturn(author);
+        given(authorRepository.findById(str)).willReturn(optionalAuthor);
 
         mvc.perform(get("/authors/edit")
                     .contentType(MediaType.TEXT_HTML)
-                    .param("id", str))
+                    .param("id", "testId"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("authors/edit"))
-                .andExpect(model().attribute("authors", author.get()));
+                .andExpect(model().attribute("authors", optionalAuthor.get()));
     }
 
     @Test
     @DisplayName("Проверка страницы /authors/create")
     public void authorCreateTest() throws Exception {
-        String strFname = "testFname";
-        String strLname = "testLname";
-        Author author = new Author(strFname, strLname);
-
         given(authorRepository.save(new Author(strFname, strLname))).willReturn(author);
 
         mvc.perform(post("/authors/create")
@@ -87,11 +83,9 @@ public class AuthorControllerTest {
     @Test
     @DisplayName("Проверка страницы /authors/delete")
     public void authorDeleteTest() throws Exception {
-        String str = "testId";
-
         mvc.perform(post("/authors/delete")
                     .contentType(MediaType.TEXT_HTML)
-                    .param("id", str))
+                    .param("id", "testId"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("save"))
                 .andExpect(model().attribute("backref", "/authors"));
@@ -108,16 +102,13 @@ public class AuthorControllerTest {
     @Test
     @DisplayName("Проверка страницы /authors/save")
     public void authorSaveTest() throws Exception {
-        String str = "testId";
-        String strFname = "testFname";
-        String strLname = "testLname";
-        Optional<Author> author = Optional.ofNullable(new Author(strFname, strLname));
+        Optional<Author> optionalAuthor = Optional.ofNullable(author);
 
-        given(authorRepository.findById(str)).willReturn(author);
+        given(authorRepository.findById("testId")).willReturn(optionalAuthor);
 
         mvc.perform(post("/authors/save")
                     .contentType(MediaType.TEXT_HTML)
-                    .param("id", str)
+                    .param("id", "testId")
                     .param("fname", strFname)
                     .param("lname", strLname))
                 .andExpect(status().isOk())

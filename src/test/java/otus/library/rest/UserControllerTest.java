@@ -29,10 +29,12 @@ public class UserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    private final String str = "testUser";
+    private final User user = new User(str);
+
     @Test
     @DisplayName("Проверка страницы /users")
     public void userListPageTest() throws Exception {
-        User user = new User("testUser");
         List<User> allUsers = Arrays.asList(user);
 
         given(userRepository.findAll()).willReturn(allUsers);
@@ -46,9 +48,6 @@ public class UserControllerTest {
     @Test
     @DisplayName("Проверка страницы /users/create")
     public void userCreateTest() throws Exception {
-        String str = "testUser";
-        User user = new User(str);
-
         given(userRepository.save(new User(str))).willReturn(user);
 
         mvc.perform(post("/users/create")
@@ -62,8 +61,6 @@ public class UserControllerTest {
     @Test
     @DisplayName("Проверка страницы /users/delete")
     public void userDeleteTest() throws Exception {
-        String str = "testUser";
-
         mvc.perform(post("/users/delete")
                 .contentType(MediaType.TEXT_HTML)
                 .param("id", str))

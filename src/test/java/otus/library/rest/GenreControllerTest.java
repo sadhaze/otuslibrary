@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import otus.library.domain.Author;
 import otus.library.domain.Genre;
 import otus.library.repository.*;
 
@@ -35,10 +34,12 @@ public class GenreControllerTest {
     @MockBean
     private GenreRepository genreRepository;
 
+    private final String strName = "testGenre";
+    private final Genre genre = new Genre(strName);
+
     @Test
     @DisplayName("Проверка страницы /genres")
     public void genreListPageTest() throws Exception {
-        Genre genre = new Genre("testGenre");
         List<Genre> allGenres = Arrays.asList(genre);
 
         given(genreRepository.findAll()).willReturn(allGenres);
@@ -52,26 +53,21 @@ public class GenreControllerTest {
     @Test
     @DisplayName("Проверка страницы /genres/edit")
     public void genreEditTest() throws Exception {
-        String str = "testId";
-        String strName = "testName";
-        Optional<Genre> genre = Optional.ofNullable(new Genre(strName));
+        Optional<Genre> optionalGenre = Optional.ofNullable(genre);
 
-        given(genreRepository.findById(str)).willReturn(genre);
+        given(genreRepository.findById(str)).willReturn(optionalGenre);
 
         mvc.perform(get("/genres/edit")
                 .contentType(MediaType.TEXT_HTML)
-                .param("id", str))
+                .param("id", "testId"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("genres/edit"))
-                .andExpect(model().attribute("genres", genre.get()));
+                .andExpect(model().attribute("genres", optionalGenre.get()));
     }
 
     @Test
     @DisplayName("Проверка страницы /genres/create")
     public void genreCreateTest() throws Exception {
-        String strName = "testName";
-        Genre genre = new Genre(strName);
-
         given(genreRepository.save(new Genre(strName))).willReturn(genre);
 
         mvc.perform(post("/genres/create")
@@ -85,11 +81,9 @@ public class GenreControllerTest {
     @Test
     @DisplayName("Проверка страницы /genres/delete")
     public void genreDeleteTest() throws Exception {
-        String str = "testId";
-
         mvc.perform(post("/genres/delete")
                 .contentType(MediaType.TEXT_HTML)
-                .param("id", str))
+                .param("id", "testId"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("save"))
                 .andExpect(model().attribute("backref", "/genres"));
@@ -106,15 +100,13 @@ public class GenreControllerTest {
     @Test
     @DisplayName("Проверка страницы /genres/save")
     public void genreSaveTest() throws Exception {
-        String str = "testId";
-        String strName = "testName";
-        Optional<Genre> genre = Optional.ofNullable(new Genre(strName));
+        Optional<Genre> optionalGenre = Optional.ofNullable(genre);
 
-        given(genreRepository.findById(str)).willReturn(genre);
+        given(genreRepository.findById("testId")).willReturn(optionalGenre);
 
         mvc.perform(post("/genres/save")
                     .contentType(MediaType.TEXT_HTML)
-                    .param("id", str)
+                    .param("id", "testId")
                     .param("name", strName))
                 .andExpect(status().isOk())
                 .andExpect(view().name("save"))
