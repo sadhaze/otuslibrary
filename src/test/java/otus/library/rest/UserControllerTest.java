@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,27 +19,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest
+@WebMvcTest(UserController.class)
 @ActiveProfiles("test")
 @DisplayName("Тест контроллера пользователей")
 public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
-
-    @MockBean
-    private AuthorRepository authorRepository;
-
-    @MockBean
-    private BookRepository bookRepository;
-
-    @MockBean
-    private CommentRepository commentRepository;
-
-    @MockBean
-    private GenreRepository genreRepository;
-
-    @MockBean
-    private MongoOperations mongoOperations;
 
     @MockBean
     private UserRepository userRepository;
