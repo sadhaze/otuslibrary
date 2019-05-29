@@ -55,7 +55,7 @@ public class GenreControllerTest {
     public void genreEditTest() throws Exception {
         Optional<Genre> optionalGenre = Optional.ofNullable(genre);
 
-        given(genreRepository.findById(str)).willReturn(optionalGenre);
+        given(genreRepository.findById("testId")).willReturn(optionalGenre);
 
         mvc.perform(get("/genres/edit")
                 .contentType(MediaType.TEXT_HTML)

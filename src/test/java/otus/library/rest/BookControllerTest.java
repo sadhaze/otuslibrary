@@ -116,7 +116,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Проверка страницы /books/save")
-    public void booksSaveTest() throws Exception {
+    public void bookSaveTest() throws Exception {
         Optional<Book> optionalBook = Optional.ofNullable(book);
 
         given(bookRepository.findById("testId")).willReturn(optionalBook);
@@ -125,7 +125,7 @@ public class BookControllerTest {
                     .contentType(MediaType.TEXT_HTML)
                     .param("id", "testId")
                     .param("name", strName)
-                    .param("authorId", "autorid")
+                    .param("authorId", "authorid")
                     .param("genreId", "genreid"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("save"))

@@ -56,7 +56,7 @@ public class AuthorControllerTest {
     public void authorEditTest() throws Exception {
         Optional<Author> optionalAuthor = Optional.ofNullable(author);
 
-        given(authorRepository.findById(str)).willReturn(optionalAuthor);
+        given(authorRepository.findById("testId")).willReturn(optionalAuthor);
 
         mvc.perform(get("/authors/edit")
                     .contentType(MediaType.TEXT_HTML)
