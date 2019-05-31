@@ -113,8 +113,11 @@ public class BookControllerTest {
     @Test
     @DisplayName("Проверка страницы /books/save")
     public void bookSaveTest() throws Exception {
+        Optional<Author> optionalAuthor = Optional.ofNullable(author);
+        Optional<Genre> optionalGenre = Optional.ofNullable(genre);
         Optional<Book> optionalBook = Optional.ofNullable(book);
-
+        given(authorRepository.findById("authorid")).willReturn(optionalAuthor);
+        given(genreRepository.findById("genreid")).willReturn(optionalGenre);
         given(bookRepository.findById("testId")).willReturn(optionalBook);
 
         mvc.perform(post("/books/save")

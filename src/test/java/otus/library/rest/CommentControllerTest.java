@@ -119,9 +119,10 @@ public class CommentControllerTest {
     public void commentSaveTest() throws Exception {
         Optional<Book> optionalBook = Optional.ofNullable(book);
         Optional<User> optionalUser = Optional.ofNullable(user);
+        Optional<Comment> optionalComment = Optional.ofNullable(comment);
         given(bookRepository.findById("bookid")).willReturn(optionalBook);
         given(userRepository.findById("userid")).willReturn(optionalUser);
-        given(commentRepository.save(comment)).willReturn(comment);
+        given(commentRepository.findById("testId")).willReturn(optionalComment);
 
         mvc.perform(post("/comments/save")
                     .contentType(MediaType.TEXT_HTML)
