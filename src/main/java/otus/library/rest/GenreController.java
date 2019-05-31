@@ -1,10 +1,6 @@
 package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +10,11 @@ import otus.library.domain.Genre;
 import otus.library.repository.GenreRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class GenreController {
     private final GenreRepository genreRepository;
-
-    @Autowired
-    private MongoOperations mongoOperations;
 
     @Autowired
     public GenreController(GenreRepository genreRepository) {
@@ -62,12 +56,9 @@ public class GenreController {
 
     @PostMapping("/genres/save")
     public String saveGenre(@RequestParam("id") String id, @RequestParam("name") String name, Model model) {
-        Query query = new Query(Criteria.where("id").is(id));
-        if(mongoOperations.exists(query, Genre.class)){
-            Update update = new Update();
-            update.set("name", name);
-            mongoOperations.findAndModify(query, update, Genre.class);
-        }
+        Optional<Genre> author = genreRepository.findById(id);
+        author.get().setName(name);
+        genreRepository.save(author.get());
         model.addAttribute("backref", "/genres");
         return "save";
     }

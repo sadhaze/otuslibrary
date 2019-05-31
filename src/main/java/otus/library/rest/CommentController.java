@@ -1,10 +1,6 @@
 package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +12,13 @@ import otus.library.domain.User;
 import otus.library.repository.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CommentController {
     private final CommentRepository commentRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    private MongoOperations mongoOperations;
 
     @Autowired
     public CommentController(CommentRepository commentRepository, BookRepository bookRepository, UserRepository userRepository) {
@@ -85,14 +79,11 @@ public class CommentController {
                             @RequestParam("userId") String userId,
                             @RequestParam("comment") String comment,
                             Model model) {
-        Query query = new Query(Criteria.where("id").is(id));
-        if(mongoOperations.exists(query, Comment.class)){
-            Update update = new Update();
-            update.set("book", bookRepository.findById(bookId).orElseThrow(NotFoundException::new));
-            update.set("user", userRepository.findById(userId).orElseThrow(NotFoundException::new));
-            update.set("comment", comment);
-            mongoOperations.findAndModify(query, update, Comment.class);
-        }
+        Optional<Comment> optionalComment = commentRepository.findById(id);
+        optionalComment.get().setBook(bookRepository.findById(bookId).orElseThrow(NotFoundException::new));
+        optionalComment.get().setUser(userRepository.findById(userId).orElseThrow(NotFoundException::new));
+        optionalComment.get().setComment(comment);
+        commentRepository.save(optionalComment.get());
         model.addAttribute("backref", "/comments");
         return "save";
     }

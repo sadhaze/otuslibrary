@@ -1,10 +1,6 @@
 package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +14,13 @@ import otus.library.repository.BookRepository;
 import otus.library.repository.GenreRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class BookController {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
-
-    @Autowired
-    private MongoOperations mongoOperations;
 
     @Autowired
     public BookController(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
@@ -80,15 +74,11 @@ public class BookController {
 
     @PostMapping("/books/save")
     public String saveBook(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("authorId") String authorId, @RequestParam("genreId") String genreId, Model model) {
-        Query query = new Query(Criteria.where("id").is(id));
-        if(mongoOperations.exists(query, Book.class)){
-            Update update = new Update();
-            update.set("name", name);
-            update.set("author", authorRepository.findById(authorId).orElseThrow(NotFoundException::new));
-            update.set("genre", genreRepository.findById(genreId).orElseThrow(NotFoundException::new));
-
-            mongoOperations.findAndModify(query, update, Book.class);
-        }
+        Optional<Book> book = bookRepository.findById(id);
+        book.get().setName(name);
+        book.get().setAuthor(authorRepository.findById(authorId).orElseThrow(NotFoundException::new));
+        book.get().setGenre(genreRepository.findById(genreId).orElseThrow(NotFoundException::new));
+        bookRepository.save(book.get());
         model.addAttribute("backref", "/books");
         return "save";
     }
