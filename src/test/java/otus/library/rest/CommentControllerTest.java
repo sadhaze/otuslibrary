@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,9 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CommentControllerTest {
     @Autowired
     private MockMvc mvc;
-
-    @MockBean
-    private MongoOperations mongoOperations;
 
     @MockBean
     private BookRepository bookRepository;
@@ -123,9 +119,10 @@ public class CommentControllerTest {
     public void commentSaveTest() throws Exception {
         Optional<Book> optionalBook = Optional.ofNullable(book);
         Optional<User> optionalUser = Optional.ofNullable(user);
+        Optional<Comment> optionalComment = Optional.ofNullable(comment);
         given(bookRepository.findById("bookid")).willReturn(optionalBook);
         given(userRepository.findById("userid")).willReturn(optionalUser);
-        given(commentRepository.save(comment)).willReturn(comment);
+        given(commentRepository.findById("testId")).willReturn(optionalComment);
 
         mvc.perform(post("/comments/save")
                     .contentType(MediaType.TEXT_HTML)

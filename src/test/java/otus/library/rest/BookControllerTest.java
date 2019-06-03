@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,9 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookControllerTest {
     @Autowired
     private MockMvc mvc;
-
-    @MockBean
-    private MongoOperations mongoOperations;
 
     @MockBean
     private AuthorRepository authorRepository;
@@ -117,8 +113,11 @@ public class BookControllerTest {
     @Test
     @DisplayName("Проверка страницы /books/save")
     public void bookSaveTest() throws Exception {
+        Optional<Author> optionalAuthor = Optional.ofNullable(author);
+        Optional<Genre> optionalGenre = Optional.ofNullable(genre);
         Optional<Book> optionalBook = Optional.ofNullable(book);
-
+        given(authorRepository.findById("authorid")).willReturn(optionalAuthor);
+        given(genreRepository.findById("genreid")).willReturn(optionalGenre);
         given(bookRepository.findById("testId")).willReturn(optionalBook);
 
         mvc.perform(post("/books/save")
