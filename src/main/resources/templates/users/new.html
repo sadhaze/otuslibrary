@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create new user</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        input:read-only {
+            background: lightgray;
+        }
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>User Info:</h1>
+<a href="/users">Back to users list</a>
+<form id="edit-form" th:action="@{/users/create}" class="users" method=POST>
+    <div class="row">
+        <label>Id:&nbsp;</label>
+        <input type={text, submit} th:name="id" value=""/>
+    </div>
+    <div class="row">
+        <button type="submit">Create</button>
+    </div>
+</form>
+</body>
+</html>

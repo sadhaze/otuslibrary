@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create new book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        input:read-only {
+            background: lightgray;
+        }
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Book Info:</h1>
+<a href="/books">Back to books list</a>
+<form id="edit-form" th:action="@{/books/create}" class="books" method=POST>
+    <div class="row">
+        <label>Name:&nbsp;</label>
+        <input type={text, submit} th:name="name" value=""/>
+    </div>
+    <div class="row">
+        <label>Author ID:&nbsp;</label>
+        <td>
+            <select th:name="authorId">
+                <li th:each="author : ${authors}">
+                    <option th:value="${author.getId()}" th:text="${author.getLname()} + ' ' + ${author.getFname()}">Author unknown</option>
+                </li>
+            </select>
+        </td>
+    </div>
+    <div class="row">
+        <label>Genre ID:&nbsp;</label>
+        <td>
+            <select th:name="genreId">
+                <li th:each="genre : ${genres}">
+                    <option th:value="${genre.getId()}" th:text="${genre.getName()}">Genre unknown</option>
+                </li>
+            </select>
+        </td>
+    </div>
+    <div class="row">
+        <button type="submit">Create</button>
+    </div>
+</form>
+</body>
+</html>

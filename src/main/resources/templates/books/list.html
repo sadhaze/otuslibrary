@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <style type="text/css">
+        li {
+            list-style-type: none;
+        }
+        body {
+            padding: 50px;
+        }
+        .books, .books td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Books:</h1>
+<a href="/">Back to main page</a>
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Author ID</th>
+        <th>Genre ID</th>
+    </tr>
+    </thead>
+    <tbody>
+        <li th:each="book : ${books}">
+            <tr>
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.name}">dum</td>
+                <td th:text="${book.author} ? (${book.author.getLname()} + ' ' + ${book.author.getFname()}) : 'Author unknown'">dum</td>
+                <td th:text="${book.genre} ? ${book.genre.getName()} : 'Genre unknown'">dum</td>
+                <td>
+                    <a th:href="@{/books/edit(id=${book.id})}">Edit</a>
+                </td>
+                <td>
+                    <form id="edit-form" th:action="@{/books/delete}" method=POST>
+                        <div class="row">
+                            <button type="submit" th:name="id" th:value="${book.id}">Delete</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </li>
+    </tbody>
+</table>
+<br><a href="/books/new">Create new book</a>
+</body>
+</html>

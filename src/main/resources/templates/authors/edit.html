@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit author</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        input:read-only {
+            background: lightgray;
+        }
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Author Info:</h1>
+<a href="/authors">Back to authors list</a>
+<form id="edit-form" th:action="@{/authors/save}" class="authors" method=POST>
+    <div class="row">
+        <label>ID:&nbsp;</label>
+        <input type={text, submit} th:name="id" th:value="${authors.id}" readonly/>
+    </div>
+    <div class="row">
+        <label>Last name:&nbsp;</label>
+        <input type={text, submit} th:name="lname" th:value="${authors.lname}"/>
+    </div>
+    <div class="row">
+        <label>First name:&nbsp;</label>
+        <input type={text, submit} th:name="fname" th:value="${authors.fname}"/>
+    </div>
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

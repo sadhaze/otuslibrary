@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create new comment</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        input:read-only {
+            background: lightgray;
+        }
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Comment Info:</h1>
+<a href="/comments">Back to Comments list</a>
+<form id="edit-form" th:action="@{/comments/create}" class="comments" method=POST>
+    <div class="row">
+        <label>Book ID:&nbsp;</label>
+        <td>
+            <select th:name="bookId">
+                <li th:each="book : ${books}">
+                    <option th:value="${book.getId()}" th:text="${book.getName()}">Book unknown</option>
+                </li>
+            </select>
+        </td>
+    </div>
+    <div class="row">
+        <label>User ID:&nbsp;</label>
+        <td>
+            <select th:name="userId">
+                <li th:each="user : ${users}">
+                    <option th:value="${user.getId()}" th:text="${user.getId()}">User unknown</option>
+                </li>
+            </select>
+        </td>
+    </div>
+    <div class="row">
+        <label>Comment:&nbsp;</label>
+        <input type={text, submit} th:name="comment" value=""/>
+    </div>
+    <div class="row">
+        <button type="submit">Create</button>
+    </div>
+</form>
+</body>
+</html>
