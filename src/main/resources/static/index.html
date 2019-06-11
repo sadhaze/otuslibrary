@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all users</title>
+    <style type="text/css">
+        li {
+            list-style-type: none;
+        }
+        body {
+            padding: 50px;
+        }
+        .users, .users td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="webjars/vue/2.5.16/vue.min.js"></script>
+    <script src="user.js" onload=getAllUsers()></script>
+</head>
+<body>
+<h1>Users:</h1>
+<a href="/">Back to main page</a>
+<table class="users" id="users-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <li>
+        <tr v-for="user in users">
+            <td name="uid">{{ user.id }}</td>
+            <td>
+                <form id="edit-form" action="/api/users/<?=$user.id?>" method="POST">
+                    <div class="row">
+                        <input type="hidden" id="userid">{{ user.id }}</input>
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </li>
+    </tbody>
+</table>
+
+<h2>Create new user</h2>
+<form id="edit-form" action="/api/users" class="users" method=POST>
+    <div class="row">
+        <label>Id:</label>
+        <input type={text, submit} name="id" value=""/>
+    </div>
+    <div class="row">
+        <button type="submit">Create</button>
+    </div>
+</form>
+</body>
+</html>
