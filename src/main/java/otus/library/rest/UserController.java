@@ -23,12 +23,9 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @PostMapping(value = "/{id}")
     public User createUser(@PathVariable("id") String id) {
-        User user = userRepository.save(new User(id));
-        System.out.println(user.getId());
-        return user;
+        return userRepository.save(new User(id));
     }
 
     @DeleteMapping("/{id}")
