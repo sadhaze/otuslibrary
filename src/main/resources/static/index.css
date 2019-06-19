@@ -1,0 +1,10 @@
+li {
+    list-style-type: none;
+}
+body {
+    padding: 50px;
+}
+td {
+    border: 1px solid lightgray;
+    padding: 5px;
+}

@@ -1,9 +1,8 @@
 package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 import otus.library.domain.User;
 import otus.library.repository.UserRepository;
 
@@ -24,18 +23,16 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping
-    @ResponseStatus
-    public Object createUser(@RequestParam("id") String id) {
-        userRepository.save(new User(id));
-        RedirectView redirectView = new RedirectView("/");
-        redirectView.setStatusCode(HttpStatus.CREATED);
-        return redirectView;
+    @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public User createUser(@PathVariable("id") String id) {
+        User user = userRepository.save(new User(id));
+        System.out.println(user.getId());
+        return user;
     }
 
-    @DeleteMapping("{userid}")
-    public String deleteUser(@PathVariable("userid") String id) {
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") String id) {
         userRepository.deleteById(id);
-        return "redirect:/";
     }
 }
