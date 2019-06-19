@@ -1,6 +1,5 @@
 package otus.library.rest;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -50,33 +49,20 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Проверка страницы /api/user/testUser")
+    @DisplayName("Проверка страницы создания /api/users/testUser")
     public void userCreateTest() throws Exception {
-        given(userRepository.save(new User(str))).willReturn(user);
+        given(userRepository.save(any())).willReturn(user);
 
         mvc.perform(post("/api/users/" + str))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(str)));
+                .andExpect(jsonPath("$.id", is(str)));
     }
 
     @Test
-    @DisplayName("Проверка страницы /users/delete")
+    @DisplayName("Проверка страницы удаления /api/users/testUser")
     public void userDeleteTest() throws Exception {
-        mvc.perform(post("/users/delete")
-                .contentType(MediaType.TEXT_HTML)
-                .param("id", str))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/users"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /users/new")
-    public void userNewTest() throws Exception {
-        mvc.perform(get("/users/new").contentType(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(view().name("users/new"));
+        mvc.perform(delete("/api/users/" + str))
+                .andExpect(status().isOk());
     }
 }

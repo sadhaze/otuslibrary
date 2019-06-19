@@ -1,7 +1,6 @@
 package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import otus.library.domain.User;
 import otus.library.repository.UserRepository;
