@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,5 +65,6 @@ public class UserControllerTest {
     public void userDeleteTest() throws Exception {
         mvc.perform(delete("/api/users/" + str))
                 .andExpect(status().isOk());
+        verify(userRepository).deleteById(str);
     }
 }

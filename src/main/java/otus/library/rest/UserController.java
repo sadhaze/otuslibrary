@@ -22,7 +22,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping(value = "/{id}")
+    @PostMapping("/{id}")
     public User createUser(@PathVariable("id") String id) {
         return userRepository.save(new User(id));
     }

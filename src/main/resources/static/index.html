@@ -8,7 +8,6 @@
 </head>
 <body>
 <h1>Users:</h1>
-<a href="/">Back to main page</a>
 <table id="users-table">
     <thead>
         <tr>
@@ -26,14 +25,46 @@
         </li>
     </tbody>
 </table>
-
 <h2>Create new user</h2>
 <form id="create-user">
     <label>Id:</label>
     <input v-model="value">
     <button @click="createUser">Create</button>
 </form>
+
+<h1>Genre:</h1>
+<table id="genres-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <li>
+            <tr v-for="genre in genres">
+                <td>{{ genre.id }}</td>
+                <td v-bind:id="'genrenameid-' + genre.id" contenteditable="true">{{ genre.name }}</td>
+                <td>
+                    <button v-bind:id="genre.id" onclick="window.location.reload(true); editGenre(id);">Save</button>
+                </td>
+                <td>
+                    <button v-bind:id="genre.id" onclick="window.location.reload(true); deleteGenreById(id);">Delete</button>
+                </td>
+            </tr>
+        </li>
+    </tbody>
+</table>
+
+<h2>Create new genre</h2>
+<form id="create-genre">
+    <label>Name:</label>
+    <input v-model="value">
+    <button @click="createGenre">Create</button>
+</form>
+
 <script src="user.js" onload=getAllUsers()></script>
+<script src="genre.js" onload=getAllGenres()></script>
 
 </body>
 </html>
