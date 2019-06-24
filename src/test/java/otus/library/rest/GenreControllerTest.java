@@ -1,5 +1,6 @@
 package otus.library.rest;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(GenreController.class)
@@ -31,81 +35,60 @@ public class GenreControllerTest {
     private GenreRepository genreRepository;
 
     private final String strName = "testGenre";
-    private final Genre genre = new Genre(strName);
+    private final String genreId = "testId";
+    private Genre genre = new Genre(strName);
+
+    @BeforeEach
+    public void init(){
+        genre.setName(strName);
+        genre.setId(genreId);
+    }
 
     @Test
-    @DisplayName("Проверка страницы /genres")
+    @DisplayName("Проверка страницы /api/genres")
     public void genreListPageTest() throws Exception {
         List<Genre> allGenres = Arrays.asList(genre);
 
         given(genreRepository.findAll()).willReturn(allGenres);
 
-        mvc.perform(get("/genres").contentType(MediaType.TEXT_HTML))
+        mvc.perform(get("/api/genres"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("genres/list"))
-                .andExpect(model().attribute("genres", allGenres));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].name", is(strName)));
     }
 
     @Test
-    @DisplayName("Проверка страницы /genres/edit")
+    @DisplayName("Проверка редактирования имени жанра /api/genres/{id}/name/{name}")
     public void genreEditTest() throws Exception {
+        final String newName = "newName";
         Optional<Genre> optionalGenre = Optional.ofNullable(genre);
+        given(genreRepository.findById(genreId)).willReturn(optionalGenre);
+        genre.setName(newName);
+        given(genreRepository.save(genre)).willReturn(genre);
 
-        given(genreRepository.findById("testId")).willReturn(optionalGenre);
-
-        mvc.perform(get("/genres/edit")
-                .contentType(MediaType.TEXT_HTML)
-                .param("id", "testId"))
+        mvc.perform(put("/api/genres/" + genre.getId() + "/name/" + newName))
                 .andExpect(status().isOk())
-                .andExpect(view().name("genres/edit"))
-                .andExpect(model().attribute("genres", optionalGenre.get()));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.name", is(newName)));
     }
 
     @Test
-    @DisplayName("Проверка страницы /genres/create")
+    @DisplayName("Проверка страницы создание /api/genres/name/{name}")
     public void genreCreateTest() throws Exception {
-        given(genreRepository.save(new Genre(strName))).willReturn(genre);
+        given(genreRepository.save(any())).willReturn(genre);
 
-        mvc.perform(post("/genres/create")
-                .contentType(MediaType.TEXT_HTML)
-                .param("name", strName))
+        mvc.perform(post("/api/genres/name/" + strName))
                 .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/genres"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.name", is(strName)));
     }
 
     @Test
-    @DisplayName("Проверка страницы /genres/delete")
+    @DisplayName("Проверка страницы /api/genres/{id}")
     public void genreDeleteTest() throws Exception {
-        mvc.perform(post("/genres/delete")
-                .contentType(MediaType.TEXT_HTML)
-                .param("id", "testId"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/genres"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /genres/new")
-    public void genreNewTest() throws Exception {
-        mvc.perform(get("/genres/new").contentType(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(view().name("genres/new"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /genres/save")
-    public void genreSaveTest() throws Exception {
-        Optional<Genre> optionalGenre = Optional.ofNullable(genre);
-
-        given(genreRepository.findById("testId")).willReturn(optionalGenre);
-
-        mvc.perform(post("/genres/save")
-                    .contentType(MediaType.TEXT_HTML)
-                    .param("id", "testId")
-                    .param("name", strName))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/genres"));
+        mvc.perform(delete("/api/genres/" + genre.getId()))
+                .andExpect(status().isOk());
+        verify(genreRepository).deleteById(genreId);
     }
 }

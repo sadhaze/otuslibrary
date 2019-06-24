@@ -1,17 +1,14 @@
 package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import otus.library.domain.User;
 import otus.library.repository.UserRepository;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final UserRepository userRepository;
 
@@ -20,29 +17,18 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/users")
-    public String listPage(Model model) {
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "users/list";
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    @PostMapping("/users/create")
-    public String createUser(@RequestParam("id") String id, Model model) {
-        userRepository.save(new User(id));
-        model.addAttribute("backref", "/users");
-        return "save";
+    @PostMapping("/{id}")
+    public User createUser(@PathVariable("id") String id) {
+        return userRepository.save(new User(id));
     }
 
-    @PostMapping("/users/delete")
-    public String deleteUser(@RequestParam("id") String id, Model model) {
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") String id) {
         userRepository.deleteById(id);
-        model.addAttribute("backref", "/users");
-        return "save";
-    }
-
-    @GetMapping("/users/new")
-    public String newPage() {
-        return "users/new";
     }
 }

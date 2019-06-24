@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Main page</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<h1>Users:</h1>
+<table id="users-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        <li>
+            <tr v-for="user in users">
+                <td>{{ user.id }}</td>
+                <td>
+                    <button v-bind:id="user.id" onclick="window.location.reload(true); deleteUserById(id);">Delete</button>
+                </td>
+            </tr>
+        </li>
+    </tbody>
+</table>
+<h2>Create new user</h2>
+<form id="create-user">
+    <label>Id:</label>
+    <input v-model="value">
+    <button @click="createUser">Create</button>
+</form>
+
+<h1>Genre:</h1>
+<table id="genres-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <li>
+            <tr v-for="genre in genres">
+                <td>{{ genre.id }}</td>
+                <td v-bind:id="'genrenameid-' + genre.id" contenteditable="true">{{ genre.name }}</td>
+                <td>
+                    <button v-bind:id="genre.id" onclick="window.location.reload(true); editGenre(id);">Save</button>
+                </td>
+                <td>
+                    <button v-bind:id="genre.id" onclick="window.location.reload(true); deleteGenreById(id);">Delete</button>
+                </td>
+            </tr>
+        </li>
+    </tbody>
+</table>
+
+<h2>Create new genre</h2>
+<form id="create-genre">
+    <label>Name:</label>
+    <input v-model="value">
+    <button @click="createGenre">Create</button>
+</form>
+
+<script src="user.js" onload=getAllUsers()></script>
+<script src="genre.js" onload=getAllGenres()></script>
+
+</body>
+</html>

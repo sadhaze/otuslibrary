@@ -14,9 +14,12 @@ import otus.library.repository.*;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -33,47 +36,35 @@ public class UserControllerTest {
     private final User user = new User(str);
 
     @Test
-    @DisplayName("Проверка страницы /users")
+    @DisplayName("Проверка страницы /api/users")
     public void userListPageTest() throws Exception {
         List<User> allUsers = Arrays.asList(user);
 
         given(userRepository.findAll()).willReturn(allUsers);
 
-        mvc.perform(get("/users").contentType(MediaType.TEXT_HTML))
+        mvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("users/list"))
-                .andExpect(model().attribute("users", allUsers));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(str)));
     }
 
     @Test
-    @DisplayName("Проверка страницы /users/create")
+    @DisplayName("Проверка страницы создания /api/users/testUser")
     public void userCreateTest() throws Exception {
-        given(userRepository.save(new User(str))).willReturn(user);
+        given(userRepository.save(any())).willReturn(user);
 
-        mvc.perform(post("/users/create")
-                    .contentType(MediaType.TEXT_HTML)
-                    .param("id", str))
+        mvc.perform(post("/api/users/" + str))
                 .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/users"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id", is(str)));
     }
 
     @Test
-    @DisplayName("Проверка страницы /users/delete")
+    @DisplayName("Проверка страницы удаления /api/users/testUser")
     public void userDeleteTest() throws Exception {
-        mvc.perform(post("/users/delete")
-                .contentType(MediaType.TEXT_HTML)
-                .param("id", str))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/users"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /users/new")
-    public void userNewTest() throws Exception {
-        mvc.perform(get("/users/new").contentType(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(view().name("users/new"));
+        mvc.perform(delete("/api/users/" + str))
+                .andExpect(status().isOk());
+        verify(userRepository).deleteById(str);
     }
 }
