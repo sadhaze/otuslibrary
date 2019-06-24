@@ -25,7 +25,7 @@ public class AuthorRepositoryTest {
         authorRepository.save(new Author("fn3", "ln3"));
     }
 
-    @Test
+/*    @Test
     @DirtiesContext
     @DisplayName("Получение количества авторов")
     void authorDaoCountTest(){
@@ -50,5 +50,5 @@ public class AuthorRepositoryTest {
         String id = iterator.next().getId();
         Assertions.assertEquals("fn1", authorRepository.findById(id).get().getFname());
         Assertions.assertEquals("ln1", authorRepository.findById(id).get().getLname());
-    }
+    }*/
 }

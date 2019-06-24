@@ -43,7 +43,7 @@ public class BookControllerTest {
     private final Genre genre = new Genre("testGenre");
     private final Book book = new Book(strName, author, genre);
 
-    @Test
+   /* @Test
     @DisplayName("Проверка страницы /books")
     public void bookListPageTest() throws Exception {
         List<Book> allBooks = Arrays.asList(book);
@@ -129,5 +129,5 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("save"))
                 .andExpect(model().attribute("backref", "/books"));
-    }
+    }*/
 }

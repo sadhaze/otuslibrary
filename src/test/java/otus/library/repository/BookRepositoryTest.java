@@ -26,7 +26,7 @@ public class BookRepositoryTest {
     @Autowired
     GenreRepository genreRepository;
 
-    @BeforeEach
+ /*   @BeforeEach
     void dbWiper(){
         authorRepository.save(new Author("fn1", "ln1"));
         authorRepository.save(new Author("fn2", "ln2"));
@@ -68,5 +68,5 @@ public class BookRepositoryTest {
         Assertions.assertEquals("fn1", book.getAuthor().getFname());
         Assertions.assertEquals("ln1", book.getAuthor().getLname());
         Assertions.assertEquals("g1", book.getGenre().getName());
-    }
+    }*/
 }

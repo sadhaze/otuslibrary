@@ -34,7 +34,7 @@ public class AuthorControllerTest {
     private final String strLname = "testLname";
     private final Author author = new Author(strFname, strLname);
 
-    @Test
+ /*   @Test
     @DisplayName("Проверка страницы /authors")
     public void authorListPageTest() throws Exception {
         List<Author> allAuthors = Arrays.asList(author);
@@ -110,5 +110,5 @@ public class AuthorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("save"))
                 .andExpect(model().attribute("backref", "/authors"));
-    }
+    }*/
 }

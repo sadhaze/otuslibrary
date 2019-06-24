@@ -38,12 +38,12 @@ public class CommentRepositoryTest {
         genreRepository.save(new Genre("g1"));
         genreRepository.save(new Genre("g2"));
         genreRepository.save(new Genre("g3"));
-        Iterator<Author> iteratorAuthor = authorRepository.findAll().iterator();
+        /*Iterator<Author> iteratorAuthor = authorRepository.findAll().iterator();
         Iterator<Genre> iteratorGenre = genreRepository.findAll().iterator();
         bookRepository.save(new Book("b1", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
         bookRepository.save(new Book("b2", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
         bookRepository.save(new Book("b3", authorRepository.findById(iteratorAuthor.next().getId()).get(), genreRepository.findById(iteratorGenre.next().getId()).get()));
-        userRepository.save(new User("u1"));
+        */userRepository.save(new User("u1"));
         userRepository.save(new User("u2"));
         userRepository.save(new User("u3"));
         Iterator<Book> iteratorBook = bookRepository.findAll().iterator();
