@@ -2,30 +2,46 @@ package otus.library.rest;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.reactive.function.server.RouterFunction;
 import otus.library.domain.Author;
 import otus.library.repository.*;
+import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AuthorController.class)
+//@RunWith(AuthorController.class)
+@SpringBootTest
+//@WebMvcTest(AuthorController.class)
 @ActiveProfiles("test")
 @DisplayName("Тест контроллера авторов")
 public class AuthorControllerTest {
+    /*@Autowired
+    private MockMvc mvc;*/
+
     @Autowired
-    private MockMvc mvc;
+    @Qualifier("authorsRoutes")
+    private RouterFunction route;
 
     @MockBean
     private AuthorRepository authorRepository;
@@ -34,20 +50,34 @@ public class AuthorControllerTest {
     private final String strLname = "testLname";
     private final Author author = new Author(strFname, strLname);
 
- /*   @Test
-    @DisplayName("Проверка страницы /authors")
+    @Test
+    @DisplayName("Проверка страницы /flux/authors")
     public void authorListPageTest() throws Exception {
-        List<Author> allAuthors = Arrays.asList(author);
+        WebTestClient client = WebTestClient
+                .bindToRouterFunction(route)
+                .build();
 
-        given(authorRepository.findAll()).willReturn(allAuthors);
+        client.post()
+                .uri("/flux/authors?lname=" + strLname + "&fname=" + strFname)
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-        mvc.perform(get("/authors").contentType(MediaType.TEXT_HTML))
+        client.get()
+                .uri("/flux/authors")
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+/*        mvc.perform(get("/flux/authors").contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
-                .andExpect(view().name("authors/list"))
-                .andExpect(model().attribute("authors", allAuthors));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].fname", is(strFname)))
+                .andExpect(jsonPath("$[0].lname", is(strLname)));*/
     }
 
-    @Test
+   /* @Test
     @DisplayName("Проверка страницы /authors/edit")
     public void authorEditTest() throws Exception {
         Optional<Author> optionalAuthor = Optional.ofNullable(author);

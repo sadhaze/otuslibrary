@@ -26,7 +26,7 @@ new Vue({
     },
     methods: {
         createAuthor: function() {
-            fetch("/flux/authors/lname/" + this.lname + "/fname/" + this.fname, {
+            fetch("/flux/authors?lname=" + this.lname + "&fname=" + this.fname, {
                 method: 'POST'
             })
                 .then(response => response.json());
@@ -37,7 +37,7 @@ new Vue({
 function editAuthor(id) {
     var alname = document.getElementById("authorlnameid-" + id).innerHTML;
     var afname = document.getElementById("authorfnameid-" + id).innerHTML;
-    fetch("/flux/authors/" + id + "/lname/" + alname + "/fname/" + afname, {
+    fetch("/flux/authors/" + id + "?lname=" + alname + "&fname=" + afname, {
         method: 'PUT'
     })
         .then(response => response.json());

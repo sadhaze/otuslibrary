@@ -2,8 +2,8 @@ package otus.library.rest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import otus.library.repository.AuthorRepository;
@@ -12,10 +12,10 @@ import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
-@RestController
+@Configuration
 public class IndexController {
     @Bean
-    public RouterFunction<ServerResponse> testRoutes(
+    public RouterFunction<ServerResponse> indexRoutes(
             @Value("classpath:/static/index.html") final Resource indexHtml,
             @Value("classpath:/static/index.css") final Resource indexCss,
             @Value("classpath:/static/genre.js") final Resource genreJs,
