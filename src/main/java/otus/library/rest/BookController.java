@@ -36,7 +36,7 @@ public class BookController {
         return "books/list";
     }
 
-    @GetMapping("/books/edit")
+/*    @GetMapping("/books/edit")
     public String editPage(@RequestParam("id") String id, Model model) {
         Book books = bookRepository.findById(id).orElseThrow(NotFoundException::new);
         List<Author> authors = authorRepository.findAll();
@@ -81,5 +81,5 @@ public class BookController {
         bookRepository.save(book.get());
         model.addAttribute("backref", "/books");
         return "save";
-    }
+    }*/
 }

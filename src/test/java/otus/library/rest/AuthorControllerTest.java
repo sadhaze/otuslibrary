@@ -3,31 +3,23 @@ package otus.library.rest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.server.RouterFunction;
 import otus.library.domain.Author;
 import otus.library.repository.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@WebMvcTest(AuthorController.class)
+@SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("Тест контроллера авторов")
 public class AuthorControllerTest {
     @Autowired
-    private MockMvc mvc;
+    @Qualifier("authorsRoutes")
+    private RouterFunction route;
 
-    @MockBean
+    @Autowired
     private AuthorRepository authorRepository;
 
     private final String strFname = "testFname";
@@ -35,80 +27,53 @@ public class AuthorControllerTest {
     private final Author author = new Author(strFname, strLname);
 
     @Test
-    @DisplayName("Проверка страницы /authors")
-    public void authorListPageTest() throws Exception {
-        List<Author> allAuthors = Arrays.asList(author);
+    @DisplayName("Проверка страницы /flux/authors")
+    public void authorsRoutesTest() throws Exception {
+        WebTestClient client = WebTestClient
+                .bindToRouterFunction(route)
+                .build();
 
-        given(authorRepository.findAll()).willReturn(allAuthors);
+        client.post()
+                .uri("/flux/authors?lname=" + strLname + "&fname=" + strFname)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json("{\"fname\":\"" + strFname + "\",\"lname\":\"" + strLname + "\"}");
 
-        mvc.perform(get("/authors").contentType(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(view().name("authors/list"))
-                .andExpect(model().attribute("authors", allAuthors));
-    }
+        client.get()
+                .uri("/flux/authors")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json("[{\"fname\":\"" + strFname + "\",\"lname\":\"" + strLname + "\"}]");
 
-    @Test
-    @DisplayName("Проверка страницы /authors/edit")
-    public void authorEditTest() throws Exception {
-        Optional<Author> optionalAuthor = Optional.ofNullable(author);
+        String testId = authorRepository.findAll().blockFirst().getId();
 
-        given(authorRepository.findById("testId")).willReturn(optionalAuthor);
+        client.put()
+                .uri("/flux/authors/" + testId + "?fname=" + strLname + "&lname=" + strFname)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json("{\"fname\":\"" + strLname + "\",\"lname\":\"" + strFname + "\"}");
 
-        mvc.perform(get("/authors/edit")
-                    .contentType(MediaType.TEXT_HTML)
-                    .param("id", "testId"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("authors/edit"))
-                .andExpect(model().attribute("authors", optionalAuthor.get()));
-    }
+        client.delete()
+                .uri("/flux/authors/" + testId)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json("");
 
-    @Test
-    @DisplayName("Проверка страницы /authors/create")
-    public void authorCreateTest() throws Exception {
-        given(authorRepository.save(new Author(strFname, strLname))).willReturn(author);
+        client.get()
+                .uri("/flux/authors")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json("[]");
 
-        mvc.perform(post("/authors/create")
-                    .contentType(MediaType.TEXT_HTML)
-                    .param("fname", strFname)
-                    .param("lname", strLname))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/authors"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /authors/delete")
-    public void authorDeleteTest() throws Exception {
-        mvc.perform(post("/authors/delete")
-                    .contentType(MediaType.TEXT_HTML)
-                    .param("id", "testId"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/authors"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /authors/new")
-    public void authorNewTest() throws Exception {
-        mvc.perform(get("/authors/new").contentType(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andExpect(view().name("authors/new"));
-    }
-
-    @Test
-    @DisplayName("Проверка страницы /authors/save")
-    public void authorSaveTest() throws Exception {
-        Optional<Author> optionalAuthor = Optional.ofNullable(author);
-
-        given(authorRepository.findById("testId")).willReturn(optionalAuthor);
-
-        mvc.perform(post("/authors/save")
-                    .contentType(MediaType.TEXT_HTML)
-                    .param("id", "testId")
-                    .param("fname", strFname)
-                    .param("lname", strLname))
-                .andExpect(status().isOk())
-                .andExpect(view().name("save"))
-                .andExpect(model().attribute("backref", "/authors"));
     }
 }

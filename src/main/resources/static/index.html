@@ -63,8 +63,44 @@
     <button @click="createGenre">Create</button>
 </form>
 
+<h1>Author:</h1>
+<table id="authors-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <li>
+        <tr v-for="author in authors">
+            <td>{{ author.id }}</td>
+            <td v-bind:id="'authorlnameid-' + author.id" contenteditable="true">{{ author.lname }}</td>
+            <td v-bind:id="'authorfnameid-' + author.id" contenteditable="true">{{ author.fname }}</td>
+            <td>
+                <button v-bind:id="author.id" onclick="window.location.reload(true); editAuthor(id);">Save</button>
+            </td>
+            <td>
+                <button v-bind:id="author.id" onclick="window.location.reload(true); deleteAuthorById(id);">Delete</button>
+            </td>
+        </tr>
+    </li>
+    </tbody>
+</table>
+
+<h2>Create new author</h2>
+<form id="create-author">
+    <label>First Name:</label>
+    <input v-model="fname">
+    <label>Last Name:</label>
+    <input v-model="lname">
+    <button @click="createAuthor">Create</button>
+</form>
+
 <script src="user.js" onload=getAllUsers()></script>
 <script src="genre.js" onload=getAllGenres()></script>
+<script src="author.js" onload=getAllAuthors()></script>
 
 </body>
 </html>
