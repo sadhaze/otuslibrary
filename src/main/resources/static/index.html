@@ -76,8 +76,8 @@
     <li>
         <tr v-for="author in authors">
             <td>{{ author.id }}</td>
-            <td v-bind:id="'authorlnameid-' + author.id" contenteditable="true">{{ author.lname }}</td>
             <td v-bind:id="'authorfnameid-' + author.id" contenteditable="true">{{ author.fname }}</td>
+            <td v-bind:id="'authorlnameid-' + author.id" contenteditable="true">{{ author.lname }}</td>
             <td>
                 <button v-bind:id="author.id" onclick="window.location.reload(true); editAuthor(id);">Save</button>
             </td>
