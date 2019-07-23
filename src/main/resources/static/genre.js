@@ -20,6 +20,9 @@ function deleteGenreById(id) {
 
 new Vue({
     el: '#create-genre',
+    data: {
+        value: ''
+    },
     methods: {
         createGenre: function() {
             fetch("/api/genres/name/" + this.value, {

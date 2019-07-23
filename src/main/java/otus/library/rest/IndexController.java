@@ -23,11 +23,11 @@ public class IndexController {
             @Value("classpath:/static/author.js") final Resource authorJs,
             AuthorRepository authorRepository) {
         return route()
-                .GET("/", request -> ok().contentType(TEXT_HTML).syncBody(indexHtml))
-                .GET("/index.css", request -> ok().contentType(TEXT_HTML).syncBody(indexCss))
-                .GET("/genre.js", request -> ok().contentType(TEXT_HTML).syncBody(genreJs))
-                .GET("/user.js", request -> ok().contentType(TEXT_HTML).syncBody(userJs))
-                .GET("/author.js", request -> ok().contentType(TEXT_HTML).syncBody(authorJs))
+                .GET("/", request -> ok().syncBody(indexHtml))
+                .GET("/index.css", request -> ok().syncBody(indexCss))
+                .GET("/genre.js", request -> ok().syncBody(genreJs))
+                .GET("/user.js", request -> ok().syncBody(userJs))
+                .GET("/author.js", request -> ok().syncBody(authorJs))
                 .build();
     }
 }

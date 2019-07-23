@@ -13,15 +13,9 @@ public class SecurityConfiguration{
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(
             ServerHttpSecurity http) {
-        return http.authorizeExchange()
-                .pathMatchers("/").authenticated()
-                .pathMatchers("/index.css").authenticated()
-                .pathMatchers("/user.js").authenticated()
-                .pathMatchers("/genre.js").authenticated()
-                .pathMatchers("/author.js").authenticated()
-                .pathMatchers("/api/users").authenticated()
-                .pathMatchers("/api/genres").authenticated()
-                .pathMatchers("/flux/authors").authenticated()
+        return http.csrf().disable()
+                .authorizeExchange()
+                .pathMatchers("/**").authenticated()
                 .and().formLogin()
                 .and().build();
     }

@@ -20,6 +20,9 @@ function deleteUserById(id) {
 
 new Vue({
     el: '#create-user',
+    data: {
+        value: ''
+    },
     methods: {
         createUser: function() {
             fetch("/api/users/" + this.value, {
